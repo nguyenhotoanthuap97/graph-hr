@@ -82,7 +82,7 @@ function Skillsets() {
                     <tr>
                       <td>Backend</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -109,7 +109,7 @@ function Skillsets() {
                     <tr>
                       <td>Java</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -156,7 +156,7 @@ function Skillsets() {
                     <tr>
                       <td>JavaFX</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -183,7 +183,7 @@ function Skillsets() {
                     <tr>
                       <td>CSS</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -210,7 +210,7 @@ function Skillsets() {
                     <tr>
                       <td>Assembly</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -237,7 +237,7 @@ function Skillsets() {
                     <tr>
                       <td>Assembly</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -264,7 +264,7 @@ function Skillsets() {
                     <tr>
                       <td>Assembly</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -291,7 +291,7 @@ function Skillsets() {
                     <tr>
                       <td>Assembly</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>
@@ -318,7 +318,7 @@ function Skillsets() {
                     <tr>
                       <td>Assembly</td>
                       <td>
-                        <Col md="2">
+                        <Col>
                           <FormGroup>
                             <Input type="select" name="select" id="rating-select">
                               <option>0</option>

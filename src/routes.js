@@ -17,9 +17,9 @@
 
 */
 import Directory from "views/Directory";
-import Typography from "views/Typography.js";
+import Team from "views/Team";
 import Skillsets from "views/Skillsets";
-import UserPage from "views/User.js";
+import UserPage from "views/User";
 
 var routes = [
   {
@@ -47,7 +47,7 @@ var routes = [
     path: "/team",
     name: "Team",
     icon: "nc-icon nc-chat-33",
-    component: Typography,
+    component: Team,
     layout: "/user"
   }
 ];
