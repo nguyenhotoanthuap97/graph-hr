@@ -6,18 +6,15 @@ import axios from "axios";
 import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, FormGroup, Label, Button } from "reactstrap";
 import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
 
-
-function Team() {
+function Job() {
   const [isLoading, setLoading] = useState(true);
   const [teams, setTeams] = useState();
   const location = useLocation();
   const queryParameters = new URLSearchParams(location.search);
   const history = useHistory();
-  console.log("teamName: ", queryParameters.get("teamName"))
 
   const toJob = (teamName) => {
-    console.log("Team: ", teamName)
-    // history.push("/team", data);
+    history.push("/team?teamName=", {})
   }
 
   useEffect(() => {
@@ -93,7 +90,7 @@ function Team() {
                               <Col md="10"></Col>
                               <Col md="2">
                                 <Row>
-                                  <Button onClick={() => toJob(team.teamName)}>View job</Button>
+                                  <Button>View job</Button>
                                 </Row>
                               </Col>
                             </Row>
@@ -114,4 +111,4 @@ function Team() {
 
 }
 
-export default Team;
+export default Job;

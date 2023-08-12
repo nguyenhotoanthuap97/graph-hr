@@ -205,3 +205,42 @@
   outline: none;
   display: none;
 }
+
+label.employee-text {
+  text-transform: capitalize;
+  font-size: 20px;
+  display: block;
+  padding: 5px;
+  line-height: 1.625rem; 
+}
+
+.card-user {
+  width: 200px;
+  margin-right: 50px;
+  margin-left: 50px;
+  box-shadow: 10px 10px 10px -4px rgba(0, 0, 0, 0.15);
+  /* margin: 50px; */
+}
+
+.content-card {
+  min-width: 1000px;
+  max-width: 1920px;
+}
+
+.employee-row {
+  margin: 20px;
+  box-shadow: 0 6px 10px -4px rgba(0, 0, 0, 0.15);
+}
+
+.avatar.border-gray {
+  margin-top: 30px;
+}
+
+/* 
+.demo-icons label {
+  text-transform: capitalize;
+  font-size: 100px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  line-height: 1.625rem; 
+} */

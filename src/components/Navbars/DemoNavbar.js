@@ -36,7 +36,8 @@ import {
   Input
 } from "reactstrap";
 
-import routes from "routes.js";
+import AdminRoutes from "routes/Admin";
+import UserRoutes from "routes/User";
 
 function Header(props) {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -57,6 +58,8 @@ function Header(props) {
   };
   const getBrand = () => {
     let brandName = "Default Brand";
+    var routes = [...UserRoutes];
+    routes = routes.concat(AdminRoutes);
     routes.map((prop, key) => {
       if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
         brandName = prop.name;
@@ -90,20 +93,10 @@ function Header(props) {
     }
   }, [location]);
   return (
-    // add or remove classes depending if we are on full-screen-maps page or not
     <Navbar
-      color={
-        props.location.pathname.indexOf("full-screen-maps") !== -1
-          ? "dark"
-          : color
-      }
+      color={"dark"}
       expand="lg"
-      className={
-        props.location.pathname.indexOf("full-screen-maps") !== -1
-          ? "navbar-absolute fixed-top"
-          : "navbar-absolute fixed-top " +
-            (color === "transparent" ? "navbar-transparent " : "")
-      }
+      className={"navbar-absolute fixed-top"}
     >
       <Container fluid>
         <div className="navbar-wrapper">
