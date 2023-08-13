@@ -1,5 +1,5 @@
 import Directory from "views/Directory";
-import Team from "views/Team";
+import Project from "views/Project";
 import Skillsets from "views/Skillsets";
 import UserPage from "views/User";
 
@@ -26,10 +26,10 @@ var routes = [
     layout: "/user"
   },
   {
-    path: "/team",
-    name: "Team",
+    path: "/project",
+    name: "Project",
     icon: "nc-icon nc-chat-33",
-    component: Team,
+    component: Project,
     layout: "/user"
   }
 ];

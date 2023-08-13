@@ -18,7 +18,7 @@ root.render(
     <Switch>
       <Route path="/user" render={(props) => <UserLayout {...props} />} />
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Redirect to="/admin/team" />
+      <Redirect to="/admin/project" />
     </Switch>
   </BrowserRouter>
 );

@@ -1,12 +1,12 @@
-import Team from "views/Team";
+import Project from "views/Project";
 import Employee from "views/Directory";
 
 var routes = [
   {
-    path: "/team",
-    name: "Team",
+    path: "/project",
+    name: "Project",
     icon: "nc-icon nc-chart-bar-32", //nucleo-icons
-    component: Team,
+    component: Project,
     layout: "/admin"
   },
   {

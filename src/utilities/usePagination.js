@@ -12,7 +12,6 @@ export const usePagination = (
     if (totalCount === undefined || !currentPage === undefined) {
       return [];
     }
-    console.log("count: ", totalCount, "pageSize: ", pageSize, "sib: ", siblingCount, "cur: ", currentPage);
     // Pagination with hidden pages when too many
     // Pages count is determined as siblingCount + firstPage + lastPage + currentPage + 2*DOTS
     const totalPageNumbers = siblingCount + 5;

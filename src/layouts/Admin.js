@@ -21,11 +21,14 @@ import React from "react";
 import PerfectScrollbar from "perfect-scrollbar";
 import { Route, Switch, useLocation } from "react-router-dom";
 
-import DemoNavbar from "components/Navbars/Navbar.js";
+import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
+import Project from "views/Project";
+import Directory from "views/Directory";
 
 import routes from "routes/Admin";
+import Job from "views/Job";
 
 var ps;
 
@@ -65,9 +68,10 @@ function Dashboard(props) {
         activeColor={activeColor}
       />
       <div className="main-panel" ref={mainPanel}>
-        <DemoNavbar {...props} />
+        <Navbar {...props} />
         <Switch>
-          {routes.map((prop, key) => {
+          {/* {routes.map((prop, key) => {
+            console.log("prop: ", prop, "key: ", key)
             return (
               <Route
                 path={prop.layout + prop.path}
@@ -75,14 +79,22 @@ function Dashboard(props) {
                 key={key}
               />
             );
-          })}
-          {/* return (
-              <Route
-                path="/admin/team:"
-                component={prop.component}
-                key={key}
-              />
-            ); */}
+          })} */}
+          <Route
+            path="/admin/project"
+            component={Project}
+            key={0}
+          />
+          <Route
+            path="/admin/employee"
+            component={Directory}
+            key={1}
+          />
+          <Route
+            path="/admin/job"
+            component={Job}
+            key={1}
+          />
         </Switch>
         <Footer fluid />
       </div>

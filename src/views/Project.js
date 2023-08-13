@@ -4,11 +4,10 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, FormGroup, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
-import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
+import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
-
-function Team() {
+function Project() {
   const pageSize = 5;
   const siblingCount = 1;
   const [pageState, setPageState] = useState(0);
@@ -16,8 +15,6 @@ function Team() {
   const [teamCount, setTeamCount] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [teams, setTeams] = useState();
-  const location = useLocation();
-  const queryParameters = new URLSearchParams(location.search);
   const history = useHistory();
 
   var paginationRange = usePagination(
@@ -28,8 +25,7 @@ function Team() {
   );
 
   const toJob = (teamName) => {
-    console.log("Team: ", teamName)
-    // history.push("/team", data);
+    history.push("/admin/job", {data: teamName});
   }
 
   const handlePagination = (e, currentPage) => {
@@ -162,4 +158,4 @@ function Team() {
 
 }
 
-export default Team;
+export default Project;
