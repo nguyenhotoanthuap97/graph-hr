@@ -3,10 +3,9 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Button, Card, CardBody, Row, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 
 const Directory = () => {
-  const DOTS = "...";
   const pageSize = 5;
   const siblingCount = 1;
   const [isLoading, setLoading] = useState(true);
@@ -43,6 +42,10 @@ const Directory = () => {
   return (
     <div className="content">
       <Row>
+        <Col md="1" />
+        <Col>
+          <Button onClick={() => createEmployee()}>Onboard new employee</Button>
+        </Col>
         <Col />
         <Col md="3">
           <form>
@@ -79,7 +82,7 @@ const Directory = () => {
                             </div>
                           </CardBody>
                         </Card>
-                      <Col md="4">
+                      <Col>
                         <Row>
                           <label>Fullname</label>
                         </Row>
@@ -87,18 +90,28 @@ const Directory = () => {
                           <Label className="employee-text">{employee.name}</Label>
                         </Row>
                         <Row>
+                          <label>Id</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.id}</Label>
+                        </Row>
+                      </Col>
+                      <Col>
+                        <Row>
                           <label>Title</label>
                         </Row>
                         <Row>
                           <Label className="employee-text">{employee.title}</Label>
                         </Row>
-                      </Col>
-                      <Col md="4">
                         <Row>
                           <label>Direct report</label>
                         </Row>
                         <Row>
-                          <Label className="employee-text">{employee.name}</Label>
+                          <Label className="employee-text">{employee.superiorName}</Label>
+                        </Row>
+                        <Row className="button-row">
+                          <Button className="float-right" onClick={() => createEmployee()}>View skills</Button> 
+                          <Button className="float-right" onClick={() => createEmployee()}>Match job</Button> 
                         </Row>
                       </Col>
                     </Row>
@@ -154,10 +167,8 @@ const Directory = () => {
   );
 };
 
-const range = (start, end) => {
-  let length = end - start + 1;
+const createEmployee = () => {
 
-  return Array.from({ length }, (_, idx) => idx + start);
 }
 
 export default Directory;
