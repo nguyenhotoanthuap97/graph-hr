@@ -16,9 +16,7 @@ function Job() {
   const [isLoading, setLoading] = useState(true);
   const [jobs, setJobs] = useState();
   const history = useHistory();
-  const teamName = history.location.state.data;
-
-  console.log("Project: ", history.location.state.data);
+  const teamName = history.location.state.teamName;
 
   var paginationRange = usePagination(
     jobCount,
@@ -27,14 +25,77 @@ function Job() {
     currentState + 1
   );
 
+  const back = () => {
+    history.push("/admin/project");
+  }
+  
+  const createJob = () => {
+    history.push("/admin/job/new", {teamName: teamName});
+  }
+
+  const toCandidate = (jobId) => {
+    history.push("/admin/job/candidate", {jobId: jobId, teamName: teamName})
+  }
+
   const handlePagination = (e, currentPage) => {
     e.preventDefault();
     setCurrentState(currentPage);
   };
 
+  const toRequirement = (teamName, jobId) => {
+    history.push("/admin/job/requirement", { teamName: teamName, jobId: jobId });
+  }
+
+  const renderPagination = () => {
+    if (paginationRange.length > 2) {
+      return (
+        <Row>
+          <Col xl="3" lg="2" md="1" sm="0" />
+          <Col xl="6" lg="8" md="10" sm="12">
+            <Pagination aria-label="pagination">
+              <PaginationItem disabled={currentState <= 0}>
+                <PaginationLink
+                  onClick={e => handlePagination(e, currentState - 1)}
+                  previous
+                  href="#"
+                />
+              </PaginationItem>
+              {paginationRange.map((page, i) => {
+                if (page === DOTS) {
+                  return (
+                    <PaginationItem disabled={true}>
+                      <PaginationLink href="#">
+                        {DOTS}
+                      </PaginationLink>
+                    </PaginationItem>
+                  )
+                }
+                return (
+                  <PaginationItem active={page === currentState + 1} key={page - 1}>
+                    <PaginationLink onClick={e => handlePagination(e, page - 1)} href="#">
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>)
+              })}
+
+              <PaginationItem disabled={currentState >= pageState - 1}>
+                <PaginationLink
+                  onClick={e => handlePagination(e, currentState + 1)}
+                  next
+                  href="#"
+                />
+              </PaginationItem>
+            </Pagination>
+          </Col>
+          <Col xl="3" lg="2" md="1" sm="0" />
+        </Row>
+      )
+    }
+    return null;
+  }
+
   useEffect(() => {
     axios.get("http://localhost:8080/graph/job?teamName=" + teamName).then(res => {
-      console.log("Jobs: ", res);
       setJobs(res.data);
       setJobCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
@@ -50,18 +111,15 @@ function Job() {
     <div className="content">
       <Row>
         <Col><Label>{teamName + ' > Job'}</Label></Col>
-        <Col md="5"></Col>
-        <Col md="3">
-          <form>
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="nc-icon nc-zoom-split" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
+      </Row>
+      <Row>
+        <Col md="1" />
+        <Col md="1">
+          <Button onClick={() => back()}>Back</Button>
+        </Col>
+        <Col />
+        <Col md="1">
+          <Button onClick={() => createJob()}>Create job</Button>
         </Col>
         <Col md="1"></Col>
       </Row>
@@ -98,8 +156,8 @@ function Job() {
                                 </Col>
                               </Row>
                               <Row className="button-row">
-                                <Button className="float-right" >View requirement</Button>
-                                <Button className="float-right" >Candidate</Button>
+                                <Button className="float-right" onClick={() => toRequirement(teamName, job.jobId)}>View requirement</Button>
+                                <Button className="float-right" onClick={() => toCandidate(job.jobId)}>Candidate</Button>
                               </Row>
                             </Col>
                           </CardBody>
@@ -108,47 +166,7 @@ function Job() {
                     </Row>
                   )
                 })}
-              <Row>
-                <Col xl="3" lg="2" md="1" sm="0" />
-                <Col xl="6" lg="8" md="10" sm="12">
-                  <Pagination aria-label="pagination">
-                    <PaginationItem disabled={currentState <= 0}>
-                      <PaginationLink
-                        onClick={e => handlePagination(e, currentState - 1)}
-                        previous
-                        href="#"
-                      />
-                    </PaginationItem>
-                    {console.log(paginationRange)}
-                    {paginationRange.map((page, i) => {
-                      if (page === DOTS) {
-                        return (
-                          <PaginationItem disabled={true}>
-                            <PaginationLink href="#">
-                              {DOTS}
-                            </PaginationLink>
-                          </PaginationItem>
-                        )
-                      }
-                      return (
-                        <PaginationItem active={page === currentState + 1} key={page - 1}>
-                          <PaginationLink onClick={e => handlePagination(e, page - 1)} href="#">
-                            {page}
-                          </PaginationLink>
-                        </PaginationItem>)
-                    })}
-
-                    <PaginationItem disabled={currentState >= pageState - 1}>
-                      <PaginationLink
-                        onClick={e => handlePagination(e, currentState + 1)}
-                        next
-                        href="#"
-                      />
-                    </PaginationItem>
-                  </Pagination>
-                </Col>
-                <Col xl="3" lg="2" md="1" sm="0" />
-              </Row>
+                {renderPagination()}
             </CardBody>
           </Card>
         </Col>

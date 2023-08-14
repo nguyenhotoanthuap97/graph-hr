@@ -29,11 +29,7 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Container,
-  InputGroup,
-  InputGroupText,
-  InputGroupAddon,
-  Input
+  Container
 } from "reactstrap";
 
 import AdminRoutes from "routes/Admin";
@@ -63,6 +59,19 @@ function Header(props) {
     routes.map((prop, key) => {
       if (window.location.href.indexOf(prop.layout + prop.path) !== -1) {
         brandName = prop.name;
+        return null;
+      }
+      if (window.location.href.indexOf("admin/job/candidate") !== -1) {
+        brandName = "Candidate";
+        return null;
+      }
+      if (window.location.href.indexOf("/admin/job/requirement") !== -1) {
+        brandName = "Requirement";
+        return null;
+      }
+      if (window.location.href.indexOf("/admin/job") !== -1) {
+        brandName = "Job";
+        return null;
       }
       return null;
     });

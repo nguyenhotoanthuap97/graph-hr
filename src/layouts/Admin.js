@@ -29,6 +29,9 @@ import Directory from "views/Directory";
 
 import routes from "routes/Admin";
 import Job from "views/Job";
+import Requirement from "views/Requirement";
+import CreateJob from "views/CreateJob";
+import StaffCandidate from "views/StaffCandidate";
 
 var ps;
 
@@ -91,8 +94,23 @@ function Dashboard(props) {
             key={1}
           />
           <Route
-            path="/admin/job"
+            exact path="/admin/job"
             component={Job}
+            key={1}
+          />
+          <Route
+            exact path="/admin/job/new"
+            component={CreateJob}
+            key={1}
+          />
+          <Route
+            exact path="/admin/job/requirement"
+            component={Requirement}
+            key={1}
+          />
+          <Route
+            exact path="/admin/job/candidate"
+            component={StaffCandidate}
             key={1}
           />
         </Switch>

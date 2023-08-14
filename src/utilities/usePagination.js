@@ -19,7 +19,6 @@ export const usePagination = (
 
     if (totalPageNumbers >= totalPageCount) {
       pageRange = range(1, totalPageCount);
-      console.log("0: ", pageRange);
       return pageRange;
     }
 
@@ -36,7 +35,6 @@ export const usePagination = (
       let leftItemCount = 3 + 2 * siblingCount;
       let leftRange = range(1, leftItemCount);
       pageRange =  [...leftRange, DOTS, totalPageCount];
-      console.log("1: ", pageRange);
       return pageRange;
     }
 
@@ -44,14 +42,12 @@ export const usePagination = (
       let rightItemCount = 3 + 2 * siblingCount;
       let rightRange = range(totalPageCount - rightItemCount + 1, totalPageCount);
       pageRange =  [firstPageIndex, DOTS, ...rightRange];
-      console.log("2: ", pageRange);
       return pageRange;
     }
 
     if (shouldShowLeftDots && shouldShowRightDots) {
       let middleRange = range(leftSiblingIndex, rightSiblingIndex);
       pageRange =  [firstPageIndex, DOTS, ...middleRange, DOTS, lastPageIndex];
-      console.log("3: ", pageRange);
       return pageRange;
     }
 

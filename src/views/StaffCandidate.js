@@ -4,8 +4,9 @@ import axios from "axios";
 
 // reactstrap components
 import { Button, Card, CardBody, Row, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-const Directory = () => {
+const StaffCandidate = () => {
   const pageSize = 5;
   const siblingCount = 1;
   const [isLoading, setLoading] = useState(true);
@@ -13,6 +14,9 @@ const Directory = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
   const [pageState, setPageState] = useState(0);
   const [currentState, setCurrentState] = useState(0);
+  const history = useHistory();
+  const jobId = history.location.state.jobId;
+  const teamName = history.location.state.teamName;
   var paginationRange = usePagination(
     employeeCount,
     pageSize,
@@ -20,9 +24,12 @@ const Directory = () => {
     currentState + 1
   );
 
+  const back = () => {
+    history.push("/admin/job", { data: teamName });
+  }
+
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/employee").then(res => {
-      console.log("Employees: ", res);
+    axios.get("http://localhost:8080/recommend/job/" + jobId).then(res => {
       setEmployees(res.data);
       setEmployeeCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));
@@ -90,24 +97,15 @@ const Directory = () => {
   return (
     <div className="content">
       <Row>
+        <Col><Label>{teamName + ' > Job > ' + jobId}</Label></Col>
+      </Row>
+      <Row>
         <Col md="1" />
-        <Col>
-          <Button onClick={() => createEmployee()}>Onboard new employee</Button>
+        <Col md="1">
+          <Button onClick={() => back()}>Back</Button>
         </Col>
         <Col />
-        <Col md="3">
-          <form>
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="nc-icon nc-zoom-split" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-        </Col>
-        <Col md="1" />
+        <Col />
       </Row>
       <Row>
         <Col md="1" />
@@ -179,4 +177,4 @@ const createEmployee = () => {
 
 }
 
-export default Directory;
+export default StaffCandidate;

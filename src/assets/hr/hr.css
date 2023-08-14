@@ -242,11 +242,17 @@ label.employee-text {
   margin-top: 50px;
 }
 
-/* 
-.demo-icons label {
-  text-transform: capitalize;
-  font-size: 100px;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  line-height: 1.625rem; 
-} */
+.demo-icons.requirement {
+  padding: 20px;
+}
+
+.title-toggle {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: 0px;
+}
+
+.title-input {
+  margin-left: 10px;
+  background-color: white !important;
+}
