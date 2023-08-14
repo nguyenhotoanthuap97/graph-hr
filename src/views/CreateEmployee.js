@@ -4,7 +4,7 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, DropdownMenu, DropdownItem, Input, FormGroup, Dropdown, DropdownToggle, Label, Button, Pagination, PaginationItem, PaginationLink, UncontrolledButtonDropdown, InputGroup } from "reactstrap";
+import { Card, CardBody, Row, Col, FormGroup, Form, UncontrolledButtonDropdown, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, InputGroup, Input, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 function useForceUpdate() {
@@ -12,7 +12,7 @@ function useForceUpdate() {
   return () => setValue(value => value + 1);
 }
 
-function CreateJob() {
+function CreateEmployee() {
   const pageSize = 5;
   const siblingCount = 1;
   const [pageState, setPageState] = useState(0);
@@ -20,10 +20,8 @@ function CreateJob() {
   const [skillCount, setSkillCount] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [skills, setSkills] = useState();
-  const [chosenTitle, setChosenTitle] = useState("Software Engineer");
   const [chosenRating, setChosenRating] = useState({});
   const history = useHistory();
-  const teamName = history.location.state.teamName;
   const forceUpdate = useForceUpdate();
 
   var paginationRange = usePagination(
@@ -34,11 +32,21 @@ function CreateJob() {
   );
 
   const back = () => {
-    history.push("/admin/job", {teamName: teamName});
+    history.push("/admin/employee");
   }
-  
-  const createJob = () => {
-    
+
+  const chooseRating = (skill, rating) => {
+    chosenRating[skill] = rating;
+    console.log(skill, rating, chosenRating);
+    forceUpdate();
+  }
+
+  const getRating = (skill) => {
+    return chosenRating[skill.name] === undefined ? 0 : chosenRating[skill.name];
+  }
+
+  const createEmployee = () => {
+
   }
 
   const handlePagination = (e, currentPage) => {
@@ -94,20 +102,6 @@ function CreateJob() {
     return null;
   }
 
-  const chooseTitle = (title) => {
-    setChosenTitle(title);
-  }
-  
-  const chooseRating = (skill, rating) => {
-    chosenRating[skill] = rating;
-    console.log(skill, rating, chosenRating);
-    forceUpdate();
-  }
-
-  const getRating = (skill) => {
-    return chosenRating[skill.name] === undefined ? 0 : chosenRating[skill.name];
-  }
-
   useEffect(() => {
     axios.get("http://localhost:8080/graph/skill").then(res => {
       setSkills(res.data);
@@ -115,7 +109,7 @@ function CreateJob() {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [teamName]);
+  }, []);
 
   if (isLoading) {
     return <div className="content">Loading...</div>
@@ -124,7 +118,7 @@ function CreateJob() {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job'}</Label></Col>
+        <Col><Label>{'New Employee'}</Label></Col>
       </Row>
       <Row>
         <Col md="1" />
@@ -133,7 +127,7 @@ function CreateJob() {
         </Col>
         <Col />
         <Col md="1">
-          <Button onClick={() => createJob()}>Create</Button>
+          <Button onClick={() => createEmployee()}>Create</Button>
         </Col>
         <Col md="1"></Col>
       </Row>
@@ -143,33 +137,112 @@ function CreateJob() {
           <Card className="demo-icons requirement">
             <CardBody>
               <Row>
-                <Col>
-                  <Row>
-                    <label>Title</label>
-                    <InputGroup>
-                      <UncontrolledButtonDropdown>
-                        <Input disabled value={chosenTitle} className="title-input" />
-                        <DropdownToggle outline split className="title-toggle" />
-                        <DropdownMenu>
-                          <DropdownItem onClick={() => chooseTitle("Software Engineer")}>Software Engineer</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Solution Architect")}>Solution Architect</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Senior Software Engineer")}>Senior Software Engineer</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Senior Quality Assurance")}>Senior Quality Assurance</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Quality Assurance")}>Quality Assurance</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Senior Business Analyst")}>Senior Business Analyst</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Business Analyst")}>Business Analyst</DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledButtonDropdown>
-                    </InputGroup>
-                  </Row>
+              <Col md="1" />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Fullname</label>
+                    <Input
+                      placeholder="Fullname..."
+                      type="text"
+                    />
+                  </FormGroup>
                 </Col>
+                <Col />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Sex</label>
+                    <FormGroup check>
+                      <Label check>
+                        <Input type="radio" name="sex-radio" checked/> Male
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check>
+                      <Label check>
+                        <Input type="radio" name="sex-radio" /> Female
+                      </Label>
+                    </FormGroup>
+                  </FormGroup>
+                </Col>
+                <Col md="1"/>
               </Row>
               <Row>
-                <label>Stack</label>
+                <Col md="1" />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Date of birth</label>
+                    <Input
+                      placeholder="dd/mm/yyyy..."
+                      type="text"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Title</label>
+                    <Input type="select" name="select" id="rating-select">
+                      <option>Software Engineer</option>
+                      <option>Solution Architect</option>
+                      <option>Senior Software Engineer</option>
+                      <option>Senior Quality Assurance</option>
+                      <option>Quality Assurance</option>
+                      <option>Senior Business Analyst</option>
+                      <option>Business Analyst</option>
+                    </Input>
+                  </FormGroup>
+                </Col>
+                <Col md="1" />
+              </Row>
+              <Row>
+                <Col md="1" />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Personal Income Tax number</label>
+                    <Input
+                      type="text"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Hometown</label>
+                    <Input
+                      placeholder="Ho Chi Minh..."
+                      type="text"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md="1" />
+              </Row>
+              <Row>
+                <Col md="1" />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>Social Insurance Book Number</label>
+                    <Input
+                      type="text"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col />
+                <Col className="pr-1" md="4">
+                  <FormGroup>
+                    <label>National ID</label>
+                    <Input
+                      placeholder="352xxxxxx..."
+                      type="text"
+                    />
+                  </FormGroup>
+                </Col>
+                <Col md="1" />
+              </Row>
+              <Row>
+                <label>Skillsets</label>
               </Row>
               <Card>
                 <CardBody>
-                  {skills
+                {skills
                     .slice(currentState * pageSize, (currentState + 1) * pageSize)
                     .map((skill, index) => {
                       return (
@@ -215,4 +288,4 @@ function CreateJob() {
 
 }
 
-export default CreateJob;
+export default CreateEmployee;

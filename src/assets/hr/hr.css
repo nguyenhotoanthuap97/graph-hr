@@ -256,3 +256,7 @@ label.employee-text {
   margin-left: 10px;
   background-color: white !important;
 }
+
+.sex-label {
+  margin-left: 20px;
+}

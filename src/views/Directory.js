@@ -4,6 +4,7 @@ import axios from "axios";
 
 // reactstrap components
 import { Button, Card, CardBody, Row, Col, FormGroup, Input, InputGroup, InputGroupAddon, InputGroupText, Label, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { useHistory } from "react-router-dom";
 
 const Directory = () => {
   const pageSize = 5;
@@ -13,6 +14,7 @@ const Directory = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
   const [pageState, setPageState] = useState(0);
   const [currentState, setCurrentState] = useState(0);
+  const history = useHistory();
   var paginationRange = usePagination(
     employeeCount,
     pageSize,
@@ -76,6 +78,18 @@ const Directory = () => {
       )
     }
     return null;
+  }
+
+  const viewSkill = (employeeId) => {
+    history.push("/admin/employee/skill", {employeeId: employeeId});
+  }
+
+  const createEmployee = () => {
+    history.push("/admin/employee/new");
+  }  
+
+  const viewJobCandidate = (employeeId) => {
+    history.push("/admin/employee/candidate", {employeeId: employeeId})
   }
 
   const handlePagination = (e, currentPage) => {
@@ -158,8 +172,8 @@ const Directory = () => {
                           <Label className="employee-text">{employee.superiorName}</Label>
                         </Row>
                         <Row className="button-row">
-                          <Button className="float-right" onClick={() => createEmployee()}>View skills</Button> 
-                          <Button className="float-right" onClick={() => createEmployee()}>Match job</Button> 
+                          <Button className="float-right" onClick={() => viewSkill(employee.id)}>View skills</Button> 
+                          <Button className="float-right" onClick={() => viewJobCandidate(employee.id)}>Match job</Button> 
                         </Row>
                       </Col>
                     </Row>
@@ -174,9 +188,5 @@ const Directory = () => {
     </div >
   );
 };
-
-const createEmployee = () => {
-
-}
 
 export default Directory;

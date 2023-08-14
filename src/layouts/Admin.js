@@ -32,6 +32,9 @@ import Job from "views/Job";
 import Requirement from "views/Requirement";
 import CreateJob from "views/CreateJob";
 import StaffCandidate from "views/StaffCandidate";
+import Rate from "views/Rate";
+import CreateEmployee from "views/CreateEmployee";
+import JobCandidate from "views/JobCandidate";
 
 var ps;
 
@@ -73,25 +76,10 @@ function Dashboard(props) {
       <div className="main-panel" ref={mainPanel}>
         <Navbar {...props} />
         <Switch>
-          {/* {routes.map((prop, key) => {
-            console.log("prop: ", prop, "key: ", key)
-            return (
-              <Route
-                path={prop.layout + prop.path}
-                component={prop.component}
-                key={key}
-              />
-            );
-          })} */}
           <Route
-            path="/admin/project"
+            exact path="/admin/project"
             component={Project}
             key={0}
-          />
-          <Route
-            path="/admin/employee"
-            component={Directory}
-            key={1}
           />
           <Route
             exact path="/admin/job"
@@ -112,6 +100,26 @@ function Dashboard(props) {
             exact path="/admin/job/candidate"
             component={StaffCandidate}
             key={1}
+          />
+          <Route
+            exact path="/admin/employee"
+            component={Directory}
+            key={2}
+          />
+          <Route
+            exact path="/admin/employee/skill"
+            component={Rate}
+            key={2}
+          />
+          <Route
+            exact path="/admin/employee/new"
+            component={CreateEmployee}
+            key={2}
+          />
+          <Route
+            exact path="/admin/employee/candidate"
+            component={JobCandidate}
+            key={2}
           />
         </Switch>
         <Footer fluid />

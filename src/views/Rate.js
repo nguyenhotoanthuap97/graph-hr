@@ -4,15 +4,10 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, DropdownMenu, DropdownItem, Input, FormGroup, Dropdown, DropdownToggle, Label, Button, Pagination, PaginationItem, PaginationLink, UncontrolledButtonDropdown, InputGroup } from "reactstrap";
+import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
-function useForceUpdate() {
-  const [value, setValue] = useState(0);
-  return () => setValue(value => value + 1);
-}
-
-function CreateJob() {
+function Rate() {
   const pageSize = 5;
   const siblingCount = 1;
   const [pageState, setPageState] = useState(0);
@@ -20,11 +15,8 @@ function CreateJob() {
   const [skillCount, setSkillCount] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [skills, setSkills] = useState();
-  const [chosenTitle, setChosenTitle] = useState("Software Engineer");
-  const [chosenRating, setChosenRating] = useState({});
   const history = useHistory();
-  const teamName = history.location.state.teamName;
-  const forceUpdate = useForceUpdate();
+  const employeeId = history.location.state.employeeId;
 
   var paginationRange = usePagination(
     skillCount,
@@ -34,11 +26,7 @@ function CreateJob() {
   );
 
   const back = () => {
-    history.push("/admin/job", {teamName: teamName});
-  }
-  
-  const createJob = () => {
-    
+    history.push("/admin/employee");
   }
 
   const handlePagination = (e, currentPage) => {
@@ -94,28 +82,14 @@ function CreateJob() {
     return null;
   }
 
-  const chooseTitle = (title) => {
-    setChosenTitle(title);
-  }
-  
-  const chooseRating = (skill, rating) => {
-    chosenRating[skill] = rating;
-    console.log(skill, rating, chosenRating);
-    forceUpdate();
-  }
-
-  const getRating = (skill) => {
-    return chosenRating[skill.name] === undefined ? 0 : chosenRating[skill.name];
-  }
-
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/skill").then(res => {
+    axios.get("http://localhost:8080/graph/employee/rating?employeeId=" + employeeId).then(res => {
       setSkills(res.data);
       setSkillCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [teamName]);
+  }, [employeeId]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>
@@ -124,16 +98,25 @@ function CreateJob() {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job'}</Label></Col>
+        <Col><Label>{'Employee > ' + employeeId + ' > Skill'}</Label></Col>
       </Row>
       <Row>
         <Col md="1" />
-        <Col md="1">
+        <Col>
           <Button onClick={() => back()}>Back</Button>
         </Col>
         <Col />
-        <Col md="1">
-          <Button onClick={() => createJob()}>Create</Button>
+        <Col md="3">
+          <form>
+            <InputGroup className="no-border">
+              <Input placeholder="Search..." />
+              <InputGroupAddon addonType="append">
+                <InputGroupText>
+                  <i className="nc-icon nc-zoom-split" />
+                </InputGroupText>
+              </InputGroupAddon>
+            </InputGroup>
+          </form>
         </Col>
         <Col md="1"></Col>
       </Row>
@@ -145,27 +128,15 @@ function CreateJob() {
               <Row>
                 <Col>
                   <Row>
-                    <label>Title</label>
-                    <InputGroup>
-                      <UncontrolledButtonDropdown>
-                        <Input disabled value={chosenTitle} className="title-input" />
-                        <DropdownToggle outline split className="title-toggle" />
-                        <DropdownMenu>
-                          <DropdownItem onClick={() => chooseTitle("Software Engineer")}>Software Engineer</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Solution Architect")}>Solution Architect</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Senior Software Engineer")}>Senior Software Engineer</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Senior Quality Assurance")}>Senior Quality Assurance</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Quality Assurance")}>Quality Assurance</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Senior Business Analyst")}>Senior Business Analyst</DropdownItem>
-                          <DropdownItem onClick={() => chooseTitle("Business Analyst")}>Business Analyst</DropdownItem>
-                        </DropdownMenu>
-                      </UncontrolledButtonDropdown>
-                    </InputGroup>
+                    <label>Name</label>
+                  </Row>
+                  <Row>
+                    <Label className="employee-text">{skills[0].employeeName}</Label>
                   </Row>
                 </Col>
               </Row>
               <Row>
-                <label>Stack</label>
+                <label>Skill</label>
               </Row>
               <Card>
                 <CardBody>
@@ -177,25 +148,12 @@ function CreateJob() {
                           <CardBody>
                             <Row>
                               <Col md="2">
-                                <Label className="employee-text">{skill.name}</Label>
+                                <Label className="employee-text">{skill.skillName}</Label>
                               </Col>
                               <Col />
                               <Col md="1">
                                 <Label>Require: </Label>
-                                <InputGroup>
-                                  <UncontrolledButtonDropdown>
-                                    <Input disabled value={getRating(skill)} className="title-input" />
-                                    <DropdownToggle outline split className="title-toggle" />
-                                    <DropdownMenu>
-                                      <DropdownItem onClick={() => chooseRating(skill.name, 0)}>0</DropdownItem>
-                                      <DropdownItem onClick={() => chooseRating(skill.name, 1)}>1</DropdownItem>
-                                      <DropdownItem onClick={() => chooseRating(skill.name, 2)}>2</DropdownItem>
-                                      <DropdownItem onClick={() => chooseRating(skill.name, 3)}>3</DropdownItem>
-                                      <DropdownItem onClick={() => chooseRating(skill.name, 4)}>4</DropdownItem>
-                                      <DropdownItem onClick={() => chooseRating(skill.name, 5)}>5 </DropdownItem>
-                                    </DropdownMenu>
-                                  </UncontrolledButtonDropdown>
-                                </InputGroup>
+                                <Input disabled value={skill.rating} />
                               </Col>
                             </Row>
                           </CardBody>
@@ -215,4 +173,4 @@ function CreateJob() {
 
 }
 
-export default CreateJob;
+export default Rate;

@@ -73,6 +73,18 @@ function Header(props) {
         brandName = "Job";
         return null;
       }
+      if (window.location.href.indexOf("/admin/employee/candidate") !== -1) {
+        brandName = "Candidate";
+        return null;
+      }
+      if (window.location.href.indexOf("/admin/employee/skill") !== -1) {
+        brandName = "Skill";
+        return null;
+      }
+      if (window.location.href.indexOf("/admin/employee") !== -1) {
+        brandName = "Employee";
+        return null;
+      }
       return null;
     });
     return brandName;

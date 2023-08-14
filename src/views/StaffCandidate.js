@@ -25,7 +25,7 @@ const StaffCandidate = () => {
   );
 
   const back = () => {
-    history.push("/admin/job", { data: teamName });
+    history.push("/admin/job", { teamName: teamName });
   }
 
   useEffect(() => {
@@ -97,7 +97,7 @@ const StaffCandidate = () => {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job > ' + jobId}</Label></Col>
+        <Col><Label>{teamName + ' > Job > ' + jobId + ' > Candidate'}</Label></Col>
       </Row>
       <Row>
         <Col md="1" />
@@ -112,7 +112,7 @@ const StaffCandidate = () => {
         <Col md="10" sm="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
-              {employees
+              {employees.length > 0 ? employees
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((employee, index) => {
                   return (
@@ -162,7 +162,7 @@ const StaffCandidate = () => {
                       </Col>
                     </Row>
                   )
-                })}
+                }) : "No candidate available"}
               {renderPagination()}
             </CardBody>
           </Card>
