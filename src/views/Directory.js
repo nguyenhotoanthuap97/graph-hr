@@ -23,7 +23,7 @@ const Directory = () => {
   );
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/employee", {headers: {"Origin": "http://localhost:3000"}}).then(res => {
+    axios.get("http://localhost:8080/graph/employee", {headers: {Origin: "http://localhost:3000"}}).then(res => {
       console.log("Employees: ", res);
       setEmployees(res.data);
       setEmployeeCount(res.data.length);
