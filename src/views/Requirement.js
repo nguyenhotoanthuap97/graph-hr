@@ -84,7 +84,7 @@ function Requirement() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/job/requirement?jobId=" + jobId).then(res => {
+    axios.get("http://localhost:8080/graph/job/requirement?jobId=" + jobId, {headers: {"Origin": "http://localhost:3000"}}).then(res => {
       console.log("Jobs: ", res);
       setRequirements(res.data);
       setRequirementCount(res.data.length)

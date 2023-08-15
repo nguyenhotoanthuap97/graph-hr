@@ -95,7 +95,7 @@ function Job() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/job?teamName=" + teamName).then(res => {
+    axios.get("http://localhost:8080/graph/job?teamName=" + teamName, {headers: {"Origin": "http://localhost:3000"}}).then(res => {
       setJobs(res.data);
       setJobCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));

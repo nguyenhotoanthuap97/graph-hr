@@ -29,7 +29,7 @@ const StaffCandidate = () => {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/recommend/job/" + jobId).then(res => {
+    axios.get("http://localhost:8080/recommend/job/" + jobId, {headers: {"Origin": "http://localhost:3000"}}).then(res => {
       setEmployees(res.data);
       setEmployeeCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));

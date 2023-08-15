@@ -109,7 +109,7 @@ function CreateJob() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/skill").then(res => {
+    axios.get("http://localhost:8080/graph/skill", {headers: {"Origin": "http://localhost:3000"}}).then(res => {
       setSkills(res.data);
       setSkillCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));

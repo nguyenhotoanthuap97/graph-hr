@@ -30,7 +30,7 @@ function JobCandidate() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/recommend/employee/" + employeeId).then(res => {
+    axios.get("http://localhost:8080/recommend/employee/" + employeeId, {headers: {"Origin": "http://localhost:3000"}}).then(res => {
       setJobs(res.data);
       setJobCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));

@@ -83,7 +83,7 @@ function Rate() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/employee/rating?employeeId=" + employeeId).then(res => {
+    axios.get("http://localhost:8080/graph/employee/rating?employeeId=" + employeeId, {headers: {"Origin": "http://localhost:3000"}}).then(res => {
       setSkills(res.data);
       setSkillCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
