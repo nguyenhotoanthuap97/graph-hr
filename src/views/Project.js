@@ -82,7 +82,7 @@ function Project() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/team-info", {headers: {"Origin": "http://localhost:3000"}}).then(res => {
+    axios.get("http://localhost:8080/graph/team-info").then(res => {
       setTeams(res.data);
       setTeamCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
