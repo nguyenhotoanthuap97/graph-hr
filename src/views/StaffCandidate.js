@@ -17,6 +17,7 @@ const StaffCandidate = () => {
   const history = useHistory();
   const jobId = history.location.state.jobId;
   const teamName = history.location.state.teamName;
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   var paginationRange = usePagination(
     employeeCount,
     pageSize,
@@ -29,13 +30,13 @@ const StaffCandidate = () => {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/recommend/job/" + jobId).then(res => {
+    axios.get(SERVER_URL + "/recommend/job/" + jobId).then(res => {
       setEmployees(res.data);
       setEmployeeCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, []);
+  });
 
   const renderPagination = () => {
     if (paginationRange.length > 2) {

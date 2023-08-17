@@ -17,6 +17,7 @@ function Job() {
   const [jobs, setJobs] = useState();
   const history = useHistory();
   const teamName = history.location.state.teamName;
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
     jobCount,
@@ -95,13 +96,13 @@ function Job() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/job?teamName=" + teamName).then(res => {
+    axios.get(SERVER_URL + "/graph/job?teamName=" + teamName).then(res => {
       setJobs(res.data);
       setJobCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [teamName]);
+  });
 
   if (isLoading) {
     return <div className="content">Loading...</div>

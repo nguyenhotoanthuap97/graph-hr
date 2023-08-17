@@ -16,6 +16,7 @@ function Project() {
   const [isLoading, setLoading] = useState(true);
   const [teams, setTeams] = useState();
   const history = useHistory();
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
     teamCount,
@@ -82,13 +83,14 @@ function Project() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/team-info").then(res => {
+    console.log(SERVER_URL)
+    axios.get(SERVER_URL + "/graph/team-info").then(res => {
       setTeams(res.data);
       setTeamCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, []);
+  });
 
   if (isLoading) {
     return <div className="content">Loading...</div>

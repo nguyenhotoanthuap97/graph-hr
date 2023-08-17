@@ -17,7 +17,7 @@ function Rate() {
   const [skills, setSkills] = useState();
   const history = useHistory();
   const employeeId = history.location.state.employeeId;
-
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   var paginationRange = usePagination(
     skillCount,
     pageSize,
@@ -83,13 +83,13 @@ function Rate() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/employee/rating?employeeId=" + employeeId).then(res => {
+    axios.get(SERVER_URL + "/graph/employee/rating?employeeId=" + employeeId).then(res => {
       setSkills(res.data);
       setSkillCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [employeeId]);
+  }, [SERVER_URL, employeeId]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>

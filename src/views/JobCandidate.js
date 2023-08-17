@@ -17,6 +17,7 @@ function JobCandidate() {
   const [jobs, setJobs] = useState();
   const history = useHistory();
   const employeeId = history.location.state.employeeId;
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
     jobCount,
@@ -30,13 +31,13 @@ function JobCandidate() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/recommend/employee/" + employeeId).then(res => {
+    axios.get(SERVER_URL + "/recommend/employee/" + employeeId).then(res => {
       setJobs(res.data);
       setJobCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [employeeId]);
+  }, [SERVER_URL, employeeId]);
 
   const handlePagination = (e, currentPage) => {
     e.preventDefault();

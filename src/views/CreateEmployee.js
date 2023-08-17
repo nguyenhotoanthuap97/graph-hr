@@ -23,6 +23,7 @@ function CreateEmployee() {
   const [chosenRating, setChosenRating] = useState({});
   const history = useHistory();
   const forceUpdate = useForceUpdate();
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
     skillCount,
@@ -102,7 +103,7 @@ function CreateEmployee() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/skill").then(res => {
+    axios.get(SERVER_URL + "/graph/skill").then(res => {
       setSkills(res.data);
       setSkillCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));

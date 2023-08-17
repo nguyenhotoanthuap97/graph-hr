@@ -18,6 +18,7 @@ function Requirement() {
   const history = useHistory();
   const teamName = history.location.state.teamName;
   const jobId = history.location.state.jobId;
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
     requirementCount,
@@ -84,14 +85,14 @@ function Requirement() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/job/requirement?jobId=" + jobId).then(res => {
+    axios.get(SERVER_URL + "/graph/job/requirement?jobId=" + jobId).then(res => {
       console.log("Jobs: ", res);
       setRequirements(res.data);
       setRequirementCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [jobId]);
+  }, [SERVER_URL, jobId]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>

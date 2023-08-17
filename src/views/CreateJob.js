@@ -25,6 +25,7 @@ function CreateJob() {
   const history = useHistory();
   const teamName = history.location.state.teamName;
   const forceUpdate = useForceUpdate();
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
     skillCount,
@@ -109,7 +110,7 @@ function CreateJob() {
   }
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/skill").then(res => {
+    axios.get(SERVER_URL + "/graph/skill").then(res => {
       setSkills(res.data);
       setSkillCount(res.data.length)
       setPageState(Math.ceil(res.data.length / pageSize));

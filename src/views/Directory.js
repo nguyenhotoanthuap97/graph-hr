@@ -15,6 +15,7 @@ const Directory = () => {
   const [pageState, setPageState] = useState(0);
   const [currentState, setCurrentState] = useState(0);
   const history = useHistory();
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   var paginationRange = usePagination(
     employeeCount,
     pageSize,
@@ -23,14 +24,14 @@ const Directory = () => {
   );
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/employee").then(res => {
+    axios.get(SERVER_URL + "/graph/employee").then(res => {
       console.log("Employees: ", res);
       setEmployees(res.data);
       setEmployeeCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, []);
+  });
 
   const renderPagination = () => {
     if (paginationRange.length > 2) {

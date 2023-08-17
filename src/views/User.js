@@ -19,14 +19,15 @@ import { useHistory, useLocation } from "react-router-dom/cjs/react-router-dom";
 function User() {
   const [isLoading, setLoading] = useState(true);
   const [employees, setEmployees] = useState();
+  const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   useEffect(() => {
-    axios.get("http://localhost:8080/graph/employee").then(res => {
+    axios.get(SERVER_URL + "/graph/employee").then(res => {
       console.log("Employees: ", res);
       setEmployees(res.data);
       setLoading(false);
     });
-  }, []);
+  });
 
   return (
     <>
