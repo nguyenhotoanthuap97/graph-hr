@@ -35,7 +35,7 @@ function CreateJob() {
   );
 
   const back = () => {
-    history.push("/admin/job", {teamName: teamName});
+    history.push("/admin/project/job", {teamName: teamName});
   }
   
   const createJob = () => {
@@ -116,7 +116,7 @@ function CreateJob() {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [teamName]);
+  }, [SERVER_URL, teamName]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>

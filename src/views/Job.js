@@ -31,11 +31,11 @@ function Job() {
   }
   
   const createJob = () => {
-    history.push("/admin/job/new", {teamName: teamName});
+    history.push("/admin/project/job/new", {teamName: teamName});
   }
 
   const toCandidate = (jobId) => {
-    history.push("/admin/job/candidate", {jobId: jobId, teamName: teamName})
+    history.push("/admin/project/job/candidate", {jobId: jobId, teamName: teamName})
   }
 
   const handlePagination = (e, currentPage) => {
@@ -43,8 +43,8 @@ function Job() {
     setCurrentState(currentPage);
   };
 
-  const toRequirement = (teamName, jobId) => {
-    history.push("/admin/job/requirement", { teamName: teamName, jobId: jobId });
+  const toRequirement = (teamName, jobId, jobName) => {
+    history.push("/admin/project/job/requirement", { teamName: teamName, jobId: jobId, jobName: jobName });
   }
 
   const renderPagination = () => {
@@ -102,7 +102,7 @@ function Job() {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  });
+  }, [SERVER_URL]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>
@@ -157,7 +157,7 @@ function Job() {
                                 </Col>
                               </Row>
                               <Row className="button-row">
-                                <Button className="float-right" onClick={() => toRequirement(teamName, job.jobId)}>View requirement</Button>
+                                <Button className="float-right" onClick={() => toRequirement(teamName, job.jobId, job.jobName)}>View requirement</Button>
                                 <Button className="float-right" onClick={() => toCandidate(job.jobId)}>Candidate</Button>
                               </Row>
                             </Col>

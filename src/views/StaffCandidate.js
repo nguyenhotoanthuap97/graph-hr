@@ -26,7 +26,7 @@ const StaffCandidate = () => {
   );
 
   const back = () => {
-    history.push("/admin/job", { teamName: teamName });
+    history.push("/admin/project/job", { teamName: teamName });
   }
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const StaffCandidate = () => {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  });
+  }, [SERVER_URL]);
 
   const renderPagination = () => {
     if (paginationRange.length > 2) {
@@ -155,10 +155,6 @@ const StaffCandidate = () => {
                         </Row>
                         <Row>
                           <Label className="employee-text">{employee.superiorName}</Label>
-                        </Row>
-                        <Row className="button-row">
-                          <Button className="float-right" onClick={() => createEmployee()}>View skills</Button> 
-                          <Button className="float-right" onClick={() => createEmployee()}>Match job</Button> 
                         </Row>
                       </Col>
                     </Row>

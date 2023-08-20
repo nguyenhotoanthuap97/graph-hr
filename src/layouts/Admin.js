@@ -82,22 +82,22 @@ function Dashboard(props) {
             key={0}
           />
           <Route
-            exact path="/admin/job"
+            exact path="/admin/project/job"
             component={Job}
             key={1}
           />
           <Route
-            exact path="/admin/job/new"
+            exact path="/admin/project/job/new"
             component={CreateJob}
             key={1}
           />
           <Route
-            exact path="/admin/job/requirement"
+            exact path="/admin/project/job/requirement"
             component={Requirement}
             key={1}
           />
           <Route
-            exact path="/admin/job/candidate"
+            exact path="/admin/project/job/candidate"
             component={StaffCandidate}
             key={1}
           />

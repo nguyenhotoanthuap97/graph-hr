@@ -26,7 +26,7 @@ function Project() {
   );
 
   const toJob = (teamName) => {
-    history.push("/admin/job", {teamName: teamName});
+    history.push("/admin/project/job", {teamName: teamName});
   }
 
   const handlePagination = (e, currentPage) => {
@@ -90,7 +90,7 @@ function Project() {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  });
+  }, [SERVER_URL]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>

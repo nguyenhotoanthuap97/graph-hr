@@ -31,7 +31,7 @@ const Directory = () => {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  });
+  }, [SERVER_URL]);
 
   const renderPagination = () => {
     if (paginationRange.length > 2) {

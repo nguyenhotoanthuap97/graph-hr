@@ -18,6 +18,7 @@ function Requirement() {
   const history = useHistory();
   const teamName = history.location.state.teamName;
   const jobId = history.location.state.jobId;
+  const jobName = history.location.state.jobName;
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
@@ -28,7 +29,7 @@ function Requirement() {
   );
 
   const back = () => {
-    history.push("/admin/job", { teamName: teamName });
+    history.push("/admin/project/job", { teamName: teamName });
   }
 
   const handlePagination = (e, currentPage) => {
@@ -134,7 +135,7 @@ function Requirement() {
                     <label>Title</label>
                   </Row>
                   <Row>
-                    <Label className="employee-text">{requirements[0].jobName}</Label>
+                    <Label className="employee-text">{jobName}</Label>
                   </Row>
                 </Col>
               </Row>
@@ -143,7 +144,7 @@ function Requirement() {
               </Row>
               <Card>
                 <CardBody>
-                  {requirements
+                  {requirements.length > 0 ? requirements
                     .slice(currentState * pageSize, (currentState + 1) * pageSize)
                     .map((requirement, index) => {
                       console.log(requirement)
@@ -163,7 +164,7 @@ function Requirement() {
                           </CardBody>
                         </Card>
                       )
-                    })}
+                    }) : "No requirement"}
                 </CardBody>
               </Card>
               {renderPagination()}

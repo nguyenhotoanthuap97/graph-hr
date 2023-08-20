@@ -109,7 +109,7 @@ function CreateEmployee() {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, []);
+  }, [SERVER_URL]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>

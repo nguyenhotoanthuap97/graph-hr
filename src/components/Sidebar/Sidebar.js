@@ -31,8 +31,8 @@ function Sidebar(props) {
   return (
     <div
       className="sidebar"
-      data-color={props.bgColor}
-      data-active-color={props.activeColor}
+      data-color="black"
+      data-active-color="primary"
     >
       <div className="logo">
         <a

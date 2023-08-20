@@ -61,15 +61,15 @@ function Header(props) {
         brandName = prop.name;
         return null;
       }
-      if (window.location.href.indexOf("admin/job/candidate") !== -1) {
+      if (window.location.href.indexOf("admin/project/job/candidate") !== -1) {
         brandName = "Candidate";
         return null;
       }
-      if (window.location.href.indexOf("/admin/job/requirement") !== -1) {
+      if (window.location.href.indexOf("/admin/project/job/requirement") !== -1) {
         brandName = "Requirement";
         return null;
       }
-      if (window.location.href.indexOf("/admin/job") !== -1) {
+      if (window.location.href.indexOf("/admin/project/job") !== -1) {
         brandName = "Job";
         return null;
       }
