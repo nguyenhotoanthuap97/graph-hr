@@ -4,7 +4,7 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, DropdownMenu, DropdownItem, Input, FormGroup, Dropdown, DropdownToggle, Label, Button, Pagination, PaginationItem, PaginationLink, UncontrolledButtonDropdown, InputGroup } from "reactstrap";
+import { Card, CardBody, Row, Col, DropdownMenu, DropdownItem, Input, DropdownToggle, Label, Button, Pagination, PaginationItem, PaginationLink, UncontrolledButtonDropdown, InputGroup, Spinner, Modal, ModalBody } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 function useForceUpdate() {
@@ -22,6 +22,7 @@ function CreateJob() {
   const [skills, setSkills] = useState();
   const [chosenTitle, setChosenTitle] = useState("Software Engineer");
   const [chosenRating, setChosenRating] = useState({});
+  const [modal, setModal] = useState(false);
   const history = useHistory();
   const teamName = history.location.state.teamName;
   const forceUpdate = useForceUpdate();
@@ -38,8 +39,28 @@ function CreateJob() {
     history.push("/admin/project/job", {teamName: teamName});
   }
   
-  const createJob = () => {
-    
+  const createJob = async () => {
+    setModal(true);
+    let requires = [];
+    for (var skill in chosenRating) {
+      if (chosenRating.hasOwnProperty(skill) && chosenRating[skill] !== 0) {
+        let require = {
+          "skillName": skill,
+          "rating": chosenRating[skill]
+        };
+        requires.push(require);
+      }
+    }
+    let requestBody = {
+      "name": chosenTitle,
+      "projectName": teamName,
+      "requires": requires
+    }
+    console.log(requestBody);
+    axios.post(SERVER_URL + "/graph/job", requestBody).then(res => {
+      setModal(false);
+      history.push("/admin/project/job/candidate", {jobId: res.data, teamName: teamName})
+    })
   }
 
   const handlePagination = (e, currentPage) => {
@@ -101,7 +122,6 @@ function CreateJob() {
   
   const chooseRating = (skill, rating) => {
     chosenRating[skill] = rating;
-    console.log(skill, rating, chosenRating);
     forceUpdate();
   }
 
@@ -211,6 +231,14 @@ function CreateJob() {
         </Col>
         <Col md="1" />
       </Row>
+      <Modal isOpen={modal}
+        modalTransition={{ timeout: 100 }}>
+        <ModalBody>
+          <Label>job initializing</Label>
+          <Spinner style={{ width: '3rem', height: '3rem' }}
+            children={false} />
+        </ModalBody>
+      </Modal>
     </div>
   );
 

@@ -260,3 +260,13 @@ label.employee-text {
 .sex-label {
   margin-left: 20px;
 }
+
+.modal-content {
+  width: fit-content;
+  margin: auto;
+}
+
+.modal-content label {
+  font-size: 25px;
+  margin-right: 20px;
+}
