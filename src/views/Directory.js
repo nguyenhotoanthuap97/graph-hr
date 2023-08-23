@@ -14,6 +14,8 @@ const Directory = () => {
   const [employeeCount, setEmployeeCount] = useState(0);
   const [pageState, setPageState] = useState(0);
   const [currentState, setCurrentState] = useState(0);
+  const [filteredEmployees, setFilteredEmployees] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const history = useHistory();
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   var paginationRange = usePagination(
@@ -98,6 +100,23 @@ const Directory = () => {
     setCurrentState(currentPage);
   };
 
+  const removeAccent = (name) => {
+    return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  const handleFilterTextChange = event => {
+    let text = event.target.value;
+    setFilterText(text);
+    let showEmployees = employees.filter(employee => removeAccent(employee.name.toLowerCase()).includes(removeAccent(text.toLowerCase())));
+    setFilteredEmployees(showEmployees);
+    if (text === "") {
+      setEmployeeCount(employees.length);
+    } else {
+      setEmployeeCount(showEmployees.length);
+    }
+    setCurrentState(0);
+  }
+
   if (isLoading) {
     return <div className="content">Loading...</div>
   }
@@ -113,7 +132,7 @@ const Directory = () => {
         <Col md="3">
           <form>
             <InputGroup className="no-border">
-              <Input placeholder="Search..." />
+              <Input placeholder="Search..." value={filterText} onChange={handleFilterTextChange} />
               <InputGroupAddon addonType="append">
                 <InputGroupText>
                   <i className="nc-icon nc-zoom-split" />
@@ -129,7 +148,7 @@ const Directory = () => {
         <Col md="10" sm="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
-              {employees
+              {(filterText === "" ? employees : filteredEmployees)
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((employee, index) => {
                   return (

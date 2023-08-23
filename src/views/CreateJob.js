@@ -234,9 +234,8 @@ function CreateJob() {
       <Modal isOpen={modal}
         modalTransition={{ timeout: 100 }}>
         <ModalBody>
-          <Label>job initializing</Label>
-          <Spinner style={{ width: '3rem', height: '3rem' }}
-            children={false} />
+          <Label>Job initializing</Label>
+          <Spinner style={{ width: '3rem', height: '3rem' }} />
         </ModalBody>
       </Modal>
     </div>

@@ -110,18 +110,6 @@ function Requirement() {
           <Button onClick={() => back()}>Back</Button>
         </Col>
         <Col />
-        <Col md="3">
-          <form>
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="nc-icon nc-zoom-split" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-        </Col>
         <Col md="1"></Col>
       </Row>
       <Row>

@@ -92,7 +92,7 @@ const StaffCandidate = () => {
   };
 
   if (isLoading) {
-    return <div className="content">Loading...</div>
+    return <div className="content loading">Loading...</div>
   }
 
   return (
@@ -159,7 +159,7 @@ const StaffCandidate = () => {
                       </Col>
                     </Row>
                   )
-                }) : "No candidate available"}
+                }) : "No candidate match"}
               {renderPagination()}
             </CardBody>
           </Card>
@@ -169,9 +169,4 @@ const StaffCandidate = () => {
     </div >
   );
 };
-
-const createEmployee = () => {
-
-}
-
 export default StaffCandidate;

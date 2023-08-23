@@ -113,7 +113,7 @@ function JobCandidate() {
         <Col md="10" className="content-card">
           <Card className="demo-icons">
             <CardBody>
-              {jobs
+              {jobs.length > 0 ? jobs
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((job, index) => {
                   return (
@@ -164,7 +164,7 @@ function JobCandidate() {
                       </Col>
                     </Row>
                   )
-                })}
+                }) : "No candidate match"}
                 {renderPagination()}
             </CardBody>
           </Card>

@@ -1,16 +1,8 @@
 import Directory from "views/Directory";
 import Project from "views/Project";
 import Skillsets from "views/Skillsets";
-import UserPage from "views/User";
 
 var routes = [
-  {
-    path: "/information", 
-    name: "Information",
-    icon: "nc-icon nc-single-02",
-    component: UserPage,
-    layout: "/user"
-  },  
   {
     path: "/skillsets",
     name: "Skillsets",

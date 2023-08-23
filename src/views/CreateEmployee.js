@@ -4,8 +4,9 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, FormGroup, Form, UncontrolledButtonDropdown, Dropdown, DropdownToggle, DropdownItem, DropdownMenu, InputGroup, Input, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Card, CardBody, Row, Col, FormGroup, Modal, ModalBody, Spinner, UncontrolledButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu, InputGroup, Input, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import {DatePicker} from "reactstrap-date-picker";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0);
@@ -21,6 +22,15 @@ function CreateEmployee() {
   const [isLoading, setLoading] = useState(true);
   const [skills, setSkills] = useState();
   const [chosenRating, setChosenRating] = useState({});
+  const [modal, setModal] = useState(false);
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [date, setDate] = useState(new Date().toLocaleDateString());
+  const [title, setTitle] = useState('Software Engineer');
+  const [sex, setSex] = useState('');
+  const [pit, setPit] = useState('');
+  const [id, setId] = useState('');
+  const [sibn, setSibn] = useState('');
   const history = useHistory();
   const forceUpdate = useForceUpdate();
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -47,6 +57,36 @@ function CreateEmployee() {
   }
 
   const createEmployee = () => {
+    setModal(true);
+    let rates = [];
+    for (var skill in chosenRating) {
+      if (chosenRating.hasOwnProperty(skill) && chosenRating[skill] !== 0) {
+        let rate = {
+          "skillName": skill,
+          "rating": chosenRating[skill]
+        };
+        rates.push(rate);
+      }
+    }
+    let requestBody = {
+      "name": name,
+      "title": title,
+      "address": address,
+      "sex": sex,
+      "sibn": sibn,
+      "pit": pit,
+      "dateOfBirth": date,
+      "rates": rates
+    }
+    console.log(requestBody);
+    axios.post(SERVER_URL + "/graph/employee", requestBody).then(res => {
+      setModal(false);
+      history.push("/admin/employee/candidate", {employeeId: res.data})
+    })
+  }
+
+  const handleChange = (value) => {
+    setDate(value);
   }
 
   const handlePagination = (e, currentPage) => {
@@ -102,6 +142,43 @@ function CreateEmployee() {
     return null;
   }
 
+  const handleNameChange = event => {
+    setName(event.target.value);
+    console.log(name)
+  }
+
+  const handleTitleChange = event => {
+    setTitle(event.target.value);
+  }
+  
+  const handleAddressChange = event => {
+    setAddress(event.target.value);
+  }
+
+  const handlePitChange = event => {
+    setPit(event.target.value);
+  }
+
+  const handleSibnChange = event => {
+    setSibn(event.target.value);
+  }
+
+  const handleIdChange = event => {
+    setId(event.target.value);
+  }
+  
+  const handleSexMaleChange = event => {
+    if (event.target.value === "on") {
+      setSex("Male");
+    }
+  }
+
+  const handleSexFemaleChange = event => {
+    if (event.target.value === "on") {
+      setSex("Female");
+    }
+  }
+
   useEffect(() => {
     axios.get(SERVER_URL + "/graph/skill").then(res => {
       setSkills(res.data);
@@ -145,6 +222,8 @@ function CreateEmployee() {
                       placeholder="Fullname..."
                       type="text"
                       id="fullName"
+                      value={name}
+                      onChange={handleNameChange}
                     />
                   </FormGroup>
                 </Col>
@@ -153,14 +232,14 @@ function CreateEmployee() {
                   <FormGroup>
                     <label>Sex</label>
                     <FormGroup check>
+                      <div>
                       <Label check>
-                        <Input type="radio" name="sex-radio" checked/> Male
+                        <Input type="radio" name="sex-radio" onChange={handleSexMaleChange} checked={sex==="Male"} /> Male
                       </Label>
-                    </FormGroup>
-                    <FormGroup check>
                       <Label check>
-                        <Input type="radio" name="sex-radio" /> Female
+                        <Input type="radio" name="sex-radio" onChange={handleSexFemaleChange} checked={sex==="Female"} /> Female
                       </Label>
+                      </div>
                     </FormGroup>
                   </FormGroup>
                 </Col>
@@ -171,17 +250,16 @@ function CreateEmployee() {
                 <Col className="pr-1" md="4">
                   <FormGroup>
                     <label>Date of birth</label>
-                    <Input
-                      placeholder="dd/mm/yyyy..."
-                      type="text"
-                    />
+                    <DatePicker id="example-datepicker"
+                      value={date}
+                      onChange={(v, f) => handleChange(f)} />
                   </FormGroup>
                 </Col>
                 <Col />
                 <Col className="pr-1" md="4">
                   <FormGroup>
                     <label>Title</label>
-                    <Input type="select" name="select" id="rating-select">
+                    <Input type="select" name="select" id="rating-select" value={title} onChange={handleTitleChange}>
                       <option>Software Engineer</option>
                       <option>Solution Architect</option>
                       <option>Senior Software Engineer</option>
@@ -201,6 +279,8 @@ function CreateEmployee() {
                     <label>Personal Income Tax number</label>
                     <Input
                       type="text"
+                      value={pit}
+                      onChange={handlePitChange}
                     />
                   </FormGroup>
                 </Col>
@@ -211,6 +291,8 @@ function CreateEmployee() {
                     <Input
                       placeholder="Ho Chi Minh..."
                       type="text"
+                      value={address}
+                      onChange={handleAddressChange}
                     />
                   </FormGroup>
                 </Col>
@@ -223,6 +305,8 @@ function CreateEmployee() {
                     <label>Social Insurance Book Number</label>
                     <Input
                       type="text"
+                      value={sibn}
+                      onChange={handleSibnChange}
                     />
                   </FormGroup>
                 </Col>
@@ -233,6 +317,8 @@ function CreateEmployee() {
                     <Input
                       placeholder="352xxxxxx..."
                       type="text"
+                      value={id}
+                      onChange={handleIdChange}
                     />
                   </FormGroup>
                 </Col>
@@ -284,6 +370,13 @@ function CreateEmployee() {
         </Col>
         <Col md="1" />
       </Row>
+      <Modal isOpen={modal}
+        modalTransition={{ timeout: 100 }}>
+        <ModalBody>
+          <Label>Employee initializing</Label>
+          <Spinner style={{ width: '3rem', height: '3rem' }} />
+        </ModalBody>
+      </Modal>
     </div>
   );
 

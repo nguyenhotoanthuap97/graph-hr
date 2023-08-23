@@ -14,7 +14,9 @@ function Project() {
   const [currentState, setCurrentState] = useState(0);
   const [teamCount, setTeamCount] = useState(0);
   const [isLoading, setLoading] = useState(true);
-  const [teams, setTeams] = useState();
+  const [teams, setTeams] = useState([]);
+  const [filteredTeams, setFilteredTeams] = useState([]);
+  const [filterText, setFilterText] = useState("");
   const history = useHistory();
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -82,6 +84,19 @@ function Project() {
     return null;
   }
 
+  const handleFilterTextChange = event => {
+    let text = event.target.value;
+    setFilterText(text);
+    let showTeams = teams.filter(team => team.teamName.toLowerCase().includes(text.toLowerCase()));
+    setFilteredTeams(showTeams);
+    if (text === "") {
+      setTeamCount(teams.length);
+    } else {
+      setTeamCount(showTeams.length);
+    }
+    setCurrentState(0);
+  }
+
   useEffect(() => {
     console.log(SERVER_URL)
     axios.get(SERVER_URL + "/graph/team-info").then(res => {
@@ -103,11 +118,11 @@ function Project() {
         <Col md="3">
           <form>
             <InputGroup className="no-border">
-              <Input placeholder="Search..." />
+              <Input placeholder="Search..." value={filterText} onChange={handleFilterTextChange} />
               <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="nc-icon nc-zoom-split" />
-                </InputGroupText>
+              <InputGroupText>
+                <i className="nc-icon nc-zoom-split" />
+              </InputGroupText>
               </InputGroupAddon>
             </InputGroup>
           </form>
@@ -119,7 +134,7 @@ function Project() {
         <Col md="10" className="content-card">
           <Card className="demo-icons">
             <CardBody>
-              {teams
+              {(filterText === "" ? teams : filteredTeams)
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((team, index) => {
                 return (
