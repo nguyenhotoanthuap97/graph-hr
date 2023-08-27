@@ -7,7 +7,7 @@ import { Button, Card, CardBody, Row, Col, FormGroup, Input, InputGroup, InputGr
 import { useHistory } from "react-router-dom";
 
 const Directory = () => {
-  const pageSize = 5;
+  const pageSize = 4;
   const siblingCount = 1;
   const [isLoading, setLoading] = useState(true);
   const [employees, setEmployees] = useState();
@@ -84,15 +84,15 @@ const Directory = () => {
   }
 
   const viewSkill = (employeeId) => {
-    history.push("/admin/employee/skill", {employeeId: employeeId});
+    history.push("/admin/employee/skill", { employeeId: employeeId });
   }
 
   const createEmployee = () => {
     history.push("/admin/employee/new");
-  }  
+  }
 
   const viewJobCandidate = (employeeId) => {
-    history.push("/admin/employee/candidate", {employeeId: employeeId})
+    history.push("/admin/employee/candidate", { employeeId: employeeId })
   }
 
   const handlePagination = (e, currentPage) => {
@@ -117,6 +117,18 @@ const Directory = () => {
     setCurrentState(0);
   }
 
+  const extractEmail = name => {
+    let words = removeAccent(name.toLowerCase()).split(" ");
+    let email = words[words.length - 1];
+    let count = words.length - 2;
+    while (count > 0) {
+      email += words[count][0];
+      count--;
+    }
+    email += words[0];
+    return email;
+  }
+
   if (isLoading) {
     return <div className="content">Loading...</div>
   }
@@ -124,47 +136,44 @@ const Directory = () => {
   return (
     <div className="content">
       <Row>
-        <Col md="1" />
         <Col>
           <Button onClick={() => createEmployee()}>Onboard new employee</Button>
         </Col>
-        <Col />
-        <Col md="3">
-          <form>
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." value={filterText} onChange={handleFilterTextChange} />
-              <InputGroupAddon addonType="append">
-                <InputGroupText>
-                  <i className="nc-icon nc-zoom-split" />
-                </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-        </Col>
-        <Col md="1" />
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" sm="12" className="content-card">
+      <Col />
+        <Col md="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
+              <Row>
+                <Col md="9"></Col>
+                <Col md="3">
+                  <form>
+                    <InputGroup className="no-border">
+                      <Input placeholder="Filter by employee name..." value={filterText} onChange={handleFilterTextChange} />
+                      <InputGroupAddon addonType="append">
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </form>
+                </Col>
+              </Row>
               {(filterText === "" ? employees : filteredEmployees)
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((employee, index) => {
                   return (
                     <Row className="employee-row">
+                      <Col lg="12" xl="3">
                         <Card className="card-user">
-                          <CardBody>
-                            <div className="author">
-                              <img
-                                alt="..."
-                                className="avatar border-gray"
-                                src={require("assets/img/default-avatar.png")}
-                              />
-                            </div>
-                          </CardBody>
+                          <div className="author">
+                            <img
+                              alt="..."
+                              className="avatar border-gray"
+                              src={require("assets/img/avatars/avatar" + ((employee.id % 9) + 1) + ".jpg")}
+                            />
+                          </div>
                         </Card>
-                      <Col>
+                      </Col>
+                      <Col xs="12" sm="5" md="5" lg="5" xl="2" className="card-text-block">
                         <Row>
                           <label>Fullname</label>
                         </Row>
@@ -172,28 +181,56 @@ const Directory = () => {
                           <Label className="employee-text">{employee.name}</Label>
                         </Row>
                         <Row>
-                          <label>Id</label>
-                        </Row>
-                        <Row>
-                          <Label className="employee-text">{employee.id}</Label>
-                        </Row>
-                      </Col>
-                      <Col>
-                        <Row>
                           <label>Title</label>
                         </Row>
                         <Row>
                           <Label className="employee-text">{employee.title}</Label>
                         </Row>
                         <Row>
+                          <label>Id</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.id < 10 ? "000" + employee.id : employee.id < 100 ? "00" + employee.id : employee.id < 1000 ? "0" + employee.id : employee.id}</Label>
+                        </Row>
+                      </Col>
+                      <Col xs="12" sm="5" md="5" lg="5" xl="2" className="card-text-block">
+                        <Row>
+                          <label>Project</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.projectName === "" ? "- On Bench -" : employee.projectName}</Label>
+                        </Row>
+                        <Row>
+                          <label>Department</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.buName === "" ? "-" : employee.buName}</Label>
+                        </Row>
+                        <Row>
                           <label>Direct report</label>
                         </Row>
                         <Row>
-                          <Label className="employee-text">{employee.superiorName}</Label>
+                          <Label className="employee-text">{employee.superiorName === "" ? "-" : employee.superiorName}</Label>
                         </Row>
+                      </Col>
+                      <Col xs="12" sm="5" md="5" lg="5" xl="2" className="card-text-block">
+                        <Row>
+                          <label>Email</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text"><i className="nc-icon nc-email-85" />{extractEmail(employee.name) + "@graphhr.com"}</Label>
+                        </Row>
+                        <Row>
+                          <label>Phone</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text"><i className="nc-icon nc-mobile" />{"0" + employee.sibn}</Label>
+                        </Row>
+                      </Col>
+                      <Col className="button-col float-right">
                         <Row className="button-row">
-                          <Button className="float-right" onClick={() => viewSkill(employee.id)}>View skills</Button> 
-                          <Button className="float-right" onClick={() => viewJobCandidate(employee.id)}>Match job</Button> 
+                          <Button className="float-right v-button" onClick={() => viewSkill(employee.id)}>View skills</Button>
+                          <Button className="float-right v-button" onClick={() => viewJobCandidate(employee.id)}>Match job</Button>
                         </Row>
                       </Col>
                     </Row>
@@ -203,8 +240,8 @@ const Directory = () => {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
-      </Row >
+        <Col />
+      </Row>
     </div >
   );
 };

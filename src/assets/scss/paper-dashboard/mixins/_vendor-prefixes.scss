@@ -38,6 +38,7 @@
           &.active > a[data-toggle="collapse"] ~ div > ul > li.active > a {
             color: $font-color;
             opacity: 1;
+            font-size: 17px;
           }
         }
     }

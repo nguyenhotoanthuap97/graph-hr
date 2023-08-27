@@ -6,9 +6,10 @@ import axios from "axios";
 // reactstrap components
 import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import Rating from "react-rating";
 
 function Requirement() {
-  const pageSize = 5;
+  const pageSize = 3;
   const siblingCount = 1;
   const [pageState, setPageState] = useState(0);
   const [currentState, setCurrentState] = useState(0);
@@ -16,7 +17,7 @@ function Requirement() {
   const [isLoading, setLoading] = useState(true);
   const [requirements, setRequirements] = useState();
   const history = useHistory();
-  const teamName = history.location.state.teamName;
+  const projectName = history.location.state.projectName;
   const jobId = history.location.state.jobId;
   const jobName = history.location.state.jobName;
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -29,7 +30,7 @@ function Requirement() {
   );
 
   const back = () => {
-    history.push("/admin/project/job", { teamName: teamName });
+    history.push("/admin/project/job", { projectName: projectName });
   }
 
   const handlePagination = (e, currentPage) => {
@@ -102,19 +103,15 @@ function Requirement() {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job > ' + jobId}</Label></Col>
+        <Col><Label>{projectName + ' > Job > ' + jobId}</Label></Col>
       </Row>
       <Row>
-        <Col md="1" />
         <Col>
           <Button onClick={() => back()}>Back</Button>
         </Col>
-        <Col />
-        <Col md="1"></Col>
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" className="content-card">
+        <Col md="12" className="content-card">
           <Card className="demo-icons requirement">
             <CardBody>
               <Row>
@@ -144,9 +141,10 @@ function Requirement() {
                                 <Label className="employee-text">{requirement.skillName}</Label>
                               </Col>
                               <Col />
-                              <Col md="1">
+                              <Col md="2">
                                 <Label>Require: </Label>
-                                <Input disabled value={requirement.rating} />
+                                <Rating className="rating-element" initialRating={requirement.rating} readonly={true} emptySymbol="fa fa-star-o fa-2x" fullSymbol="fa fa-star fa-2x" />
+                                {/* <Input disabled value={requirement.rating} /> */}
                               </Col>
                             </Row>
                           </CardBody>
@@ -159,7 +157,6 @@ function Requirement() {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
       </Row>
     </div>
   );

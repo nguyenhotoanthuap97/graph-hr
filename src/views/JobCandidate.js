@@ -4,7 +4,7 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { FormGroup, Input, Card, CardBody, Row, Col, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 function JobCandidate() {
@@ -15,6 +15,8 @@ function JobCandidate() {
   const [jobCount, setJobCount] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [jobs, setJobs] = useState();
+  const [vacantJobs, setVacantJobs] = useState([]);
+  const [vacantOnly, setVacantOnly] = useState(true);
   const history = useHistory();
   const employeeId = history.location.state.employeeId;
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -33,7 +35,9 @@ function JobCandidate() {
   useEffect(() => {
     axios.get(SERVER_URL + "/recommend/employee/" + employeeId).then(res => {
       setJobs(res.data);
-      setJobCount(res.data.length);
+      let filteredJobs = res.data.filter(j => j.employee === "");
+      setVacantJobs(filteredJobs);
+      setJobCount(filteredJobs.length);
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
@@ -43,6 +47,17 @@ function JobCandidate() {
     e.preventDefault();
     setCurrentState(currentPage);
   };
+
+  const handleChange = (e) => {
+    let onlyVacant = e.target.checked;
+    setVacantOnly(onlyVacant);
+    if (onlyVacant) {
+      setJobCount(vacantJobs.length);
+    } else {
+      setJobCount(jobs.length);
+    }
+    setCurrentState(0);
+  }
   
   const renderPagination = () => {
     if (paginationRange.length > 2) {
@@ -102,18 +117,27 @@ function JobCandidate() {
         <Col><Label>{"Employee > " + employeeId + ' > Job candidate'}</Label></Col>
       </Row>
       <Row>
-        <Col md="1" />
         <Col md="1">
           <Button onClick={() => back()}>Back</Button>
         </Col>
         <Col />
+        <Col md="2">
+          <form>
+            <FormGroup check className="checkbox-form">
+              <Label check>
+                <Input type="checkbox" defaultChecked={true} onChange={e => handleChange(e)}/>{' '}
+                Show vacant jobs only
+              </Label>
+            </FormGroup>
+          </form>
+        </Col>
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" className="content-card">
+        <Col />
+        <Col md="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
-              {jobs.length > 0 ? jobs
+              {(vacantOnly ? vacantJobs : jobs).length > 0 ? (vacantOnly ? vacantJobs : jobs)
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((job, index) => {
                   return (
@@ -123,15 +147,13 @@ function JobCandidate() {
                           <CardBody>
                             <Col md="12">
                               <Row>
-                                <Col className="pr-1" md="6">
+                                <Col className="pr-1" md="3">
                                   <Row>
                                     <label>ID</label>
                                   </Row>
                                   <Row>
                                     <Label className="employee-text">{job.jobId}</Label>
                                   </Row>
-                                </Col>
-                                <Col className="pr-1" md="6">
                                   <Row>
                                     <label>Title</label>
                                   </Row>
@@ -139,22 +161,32 @@ function JobCandidate() {
                                     <Label className="employee-text">{job.jobName}</Label>
                                   </Row>
                                 </Col>
-                              </Row>
-                              <Row>
-                                <Col className="pr-1" md="6">
+                                <Col className="pr-1" md="3">
                                   <Row>
                                     <label>Team</label>
                                   </Row>
                                   <Row>
-                                    <Label className="employee-text">{job.teamName}</Label>
+                                    <Label className="employee-text">{job.projectName}</Label>
                                   </Row>
-                                </Col>
-                                <Col className="pr-1" md="6">
                                   <Row>
                                     <label>Business Unit</label>
                                   </Row>
                                   <Row>
                                     <Label className="employee-text">{job.buName}</Label>
+                                  </Row>
+                                </Col>
+                                <Col className="pr-1" md="3">
+                                <Row>
+                                    <label>Stack</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{job.stack}</Label>
+                                  </Row>
+                                  <Row>
+                                    <label>Occupant</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{job.employee === "" ? "-" : job.employee}</Label>
                                   </Row>
                                 </Col>
                               </Row>
@@ -169,7 +201,7 @@ function JobCandidate() {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
+        <Col />
       </Row>
     </div>
   );

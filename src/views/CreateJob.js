@@ -24,7 +24,7 @@ function CreateJob() {
   const [chosenRating, setChosenRating] = useState({});
   const [modal, setModal] = useState(false);
   const history = useHistory();
-  const teamName = history.location.state.teamName;
+  const projectName = history.location.state.projectName;
   const forceUpdate = useForceUpdate();
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
@@ -36,7 +36,7 @@ function CreateJob() {
   );
 
   const back = () => {
-    history.push("/admin/project/job", {teamName: teamName});
+    history.push("/admin/project/job", {projectName: projectName});
   }
   
   const createJob = async () => {
@@ -53,13 +53,13 @@ function CreateJob() {
     }
     let requestBody = {
       "name": chosenTitle,
-      "projectName": teamName,
+      "projectName": projectName,
       "requires": requires
     }
     console.log(requestBody);
     axios.post(SERVER_URL + "/graph/job", requestBody).then(res => {
       setModal(false);
-      history.push("/admin/project/job/candidate", {jobId: res.data, teamName: teamName})
+      history.push("/admin/project/job/candidate", {jobId: res.data, projectName: projectName})
     })
   }
 
@@ -136,7 +136,7 @@ function CreateJob() {
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [SERVER_URL, teamName]);
+  }, [SERVER_URL, projectName]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>
@@ -145,22 +145,20 @@ function CreateJob() {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job'}</Label></Col>
+        <Col><Label>{projectName + ' > Job'}</Label></Col>
       </Row>
       <Row>
-        <Col md="1" />
         <Col md="1">
           <Button onClick={() => back()}>Back</Button>
         </Col>
         <Col />
         <Col md="1">
-          <Button onClick={() => createJob()}>Create</Button>
+          <Button className="float-right" onClick={() => createJob()}>Create</Button>
         </Col>
-        <Col md="1"></Col>
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" className="content-card">
+        <Col />
+        <Col md="12" className="content-card">
           <Card className="demo-icons requirement">
             <CardBody>
               <Row>
@@ -197,15 +195,15 @@ function CreateJob() {
                         <Card>
                           <CardBody>
                             <Row>
-                              <Col md="2">
+                              <Col md="5" xl="2">
                                 <Label className="employee-text">{skill.name}</Label>
                               </Col>
                               <Col />
-                              <Col md="1">
+                              <Col md="5" xl="2">
                                 <Label>Require: </Label>
                                 <InputGroup>
                                   <UncontrolledButtonDropdown>
-                                    <Input disabled value={getRating(skill)} className="title-input" />
+                                    <Input disabled value={getRating(skill)} className="title-input rating-dropdown" />
                                     <DropdownToggle outline split className="title-toggle" />
                                     <DropdownMenu>
                                       <DropdownItem onClick={() => chooseRating(skill.name, 0)}>0</DropdownItem>
@@ -229,7 +227,7 @@ function CreateJob() {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
+        <Col />
       </Row>
       <Modal isOpen={modal}
         modalTransition={{ timeout: 100 }}>

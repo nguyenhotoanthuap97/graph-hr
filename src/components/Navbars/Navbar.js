@@ -141,27 +141,9 @@ function Header(props) {
           <span className="navbar-toggler-bar navbar-kebab" />
         </NavbarToggler>
         <Collapse isOpen={isOpen} navbar className="justify-content-end">
-
           <Nav navbar>
-            <Dropdown
-              nav
-              isOpen={dropdownOpen}
-              toggle={(e) => dropdownToggle(e)}
-            >
-              <DropdownToggle caret nav>
-                <i className="nc-icon nc-bell-55" />
-                <p>
-                  <span className="d-lg-none d-md-block">Notification</span>
-                </p>
-              </DropdownToggle>
-              <DropdownMenu right>
-                <DropdownItem tag="a">Notification 1</DropdownItem>
-                <DropdownItem tag="a">Notification 2</DropdownItem>
-                <DropdownItem tag="a">Notification 3</DropdownItem>
-              </DropdownMenu>
-            </Dropdown>
             <NavItem>
-              <Link to="#pablo" className="nav-link btn-rotate">
+              <Link to="" className="nav-link btn-rotate">
                 <i className="nc-icon nc-single-02" />
                 <p>
                   <span className="d-lg-none d-md-block">Account</span>

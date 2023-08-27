@@ -1330,8 +1330,8 @@ fieldset[disabled]
 
 .input-group .form-control:not(:first-child):not(:last-child), .input-group-btn:not(:first-child):not(:last-child) {
   border-radius: 4px;
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
+  /* border-top-left-radius: 0;
+  border-bottom-left-radius: 0; */
   border-left: 0 none; }
 
 .input-group .form-control:first-child,
@@ -3480,7 +3480,7 @@ License - nucleoapp.com/license/
   transition: all 0.5s cubic-bezier(0.685, 0.0473, 0.346, 1); }
   .main-panel > .content {
     padding: 0 30px 30px;
-    min-height: calc(100vh - 123px);
+    min-height: calc(100vh - 150px);
     margin-top: 93px; }
   .main-panel > .navbar {
     margin-bottom: 0; }
@@ -3843,7 +3843,7 @@ License - nucleoapp.com/license/
   .card label {
     font-size: 0.8571em;
     margin-bottom: 5px;
-    color: #9A9A9A; }
+    color: #000000; }
   .card .card-footer {
     background-color: transparent;
     border: 0; }
@@ -3916,6 +3916,7 @@ License - nucleoapp.com/license/
     border-radius: 12px; }
 
 .card-user .author {
+  width: auto;
   text-align: center;
   text-transform: none;
   margin-top: -77px; }

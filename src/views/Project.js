@@ -27,8 +27,8 @@ function Project() {
     currentState + 1
   );
 
-  const toJob = (teamName) => {
-    history.push("/admin/project/job", {teamName: teamName});
+  const toJob = (projectName) => {
+    history.push("/admin/project/job", { projectName: projectName });
   }
 
   const handlePagination = (e, currentPage) => {
@@ -87,7 +87,7 @@ function Project() {
   const handleFilterTextChange = event => {
     let text = event.target.value;
     setFilterText(text);
-    let showTeams = teams.filter(team => team.teamName.toLowerCase().includes(text.toLowerCase()));
+    let showTeams = teams.filter(team => team.projectName.toLowerCase().includes(text.toLowerCase()));
     setFilteredTeams(showTeams);
     if (text === "") {
       setTeamCount(teams.length);
@@ -114,63 +114,79 @@ function Project() {
   return (
     <div className="content">
       <Row>
-        <Col md="8"></Col>
-        <Col md="3">
-          <form>
-            <InputGroup className="no-border">
-              <Input placeholder="Search..." value={filterText} onChange={handleFilterTextChange} />
-              <InputGroupAddon addonType="append">
-              <InputGroupText>
-                <i className="nc-icon nc-zoom-split" />
-              </InputGroupText>
-              </InputGroupAddon>
-            </InputGroup>
-          </form>
-        </Col>
-        <Col md="1"></Col>
-      </Row>
-      <Row>
-      <Col md="1" />
-        <Col md="10" className="content-card">
+        <Col md="1" />
+        <Col md="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
+              <Row>
+                <Col md="9"></Col>
+                <Col md="3">
+                  <form>
+                    <InputGroup className="no-border">
+                      <Input placeholder="Filter by project name..." value={filterText} onChange={handleFilterTextChange} />
+                      <InputGroupAddon addonType="append">
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </form>
+                </Col>
+              </Row>
               {(filterText === "" ? teams : filteredTeams)
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((team, index) => {
-                return (
-                  <Row>
-                    <Col>
-                      <Card>
-                        <CardBody>
-                          <Col md="12">
-                            <Row>
-                              <Col className="pr-1" md="6">
-                                <Row>
-                                  <label>Team</label>
-                                </Row>
-                                <Row>
-                                  <Label className="employee-text">{team.teamName}</Label>
-                                </Row>
-                              </Col>
-                              <Col className="pr-1" md="6">
-                                <Row>
-                                  <label>Business unit</label>
-                                </Row>
-                                <Row>
-                                  <Label className="employee-text">{team.buName}</Label>
-                                </Row>
-                              </Col>
-                            </Row>
-                            <Row className="button-row">
-                              <Button className="float-right" onClick={() => toJob(team.teamName)}>View job</Button>
-                            </Row>
-                          </Col>
-                        </CardBody>
-                      </Card>
-                    </Col>
-                  </Row>
-                )
-              })}
+                  return (
+                    <Row>
+                      <Col>
+                        <Card>
+                          <CardBody>
+                            <Col md="12">
+                              <Row>
+                                <Col className="pr-1" md="2">
+                                  <Row>
+                                    <label>Project</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text ">{team.projectName}</Label>
+                                  </Row>
+                                  <Row>
+                                    <label>Business unit</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{team.buName}</Label>
+                                  </Row>
+                                </Col>
+                                <Col className="pr-1" md="2">
+                                  <Row>
+                                    <label>Current head count</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{team.occupantCount}</Label>
+                                  </Row>
+                                  <Row>
+                                    <label>Vacancy</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{team.jobCount - team.occupantCount}</Label>
+                                  </Row>
+                                </Col>
+                                <Col className="pr-1">
+                                  <Row>
+                                    <label>Description</label>
+                                  </Row>
+                                  <Row>
+                                    <p className="description-textarea">{team.description}</p>
+                                  </Row>
+                                </Col>
+                                <Col md="2">
+                                  <Button className="float-right margin-btn" onClick={() => toJob(team.projectName)}>View positions</Button>
+                                </Col>
+                              </Row>
+                            </Col>
+                          </CardBody>
+                        </Card>
+                      </Col>
+                    </Row>
+                  )
+                })}
               {renderPagination()}
             </CardBody>
           </Card>

@@ -4,7 +4,7 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { FormGroup, Card, CardBody, Row, Col, Input, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 function Job() {
@@ -15,8 +15,10 @@ function Job() {
   const [jobCount, setJobCount] = useState(0);
   const [isLoading, setLoading] = useState(true);
   const [jobs, setJobs] = useState();
+  const [vacantJobs, setVacantJobs] = useState([]);
+  const [vacantOnly, setVacantOnly] = useState(false);
   const history = useHistory();
-  const teamName = history.location.state.teamName;
+  const projectName = history.location.state.projectName;
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
 
   var paginationRange = usePagination(
@@ -31,11 +33,11 @@ function Job() {
   }
   
   const createJob = () => {
-    history.push("/admin/project/job/new", {teamName: teamName});
+    history.push("/admin/project/job/new", {projectName: projectName});
   }
 
   const toCandidate = (jobId) => {
-    history.push("/admin/project/job/candidate", {jobId: jobId, teamName: teamName})
+    history.push("/admin/project/job/candidate", {jobId: jobId, projectName: projectName})
   }
 
   const handlePagination = (e, currentPage) => {
@@ -43,8 +45,19 @@ function Job() {
     setCurrentState(currentPage);
   };
 
-  const toRequirement = (teamName, jobId, jobName) => {
-    history.push("/admin/project/job/requirement", { teamName: teamName, jobId: jobId, jobName: jobName });
+  const toRequirement = (projectName, jobId, jobName) => {
+    history.push("/admin/project/job/requirement", { projectName: projectName, jobId: jobId, jobName: jobName });
+  }
+
+  const handleChange = (e) => {
+    let onlyVacant = e.target.checked;
+    setVacantOnly(onlyVacant);
+    if (onlyVacant) {
+      setJobCount(vacantJobs.length);
+    } else {
+      setJobCount(jobs.length);
+    }
+    setCurrentState(0);
   }
 
   const renderPagination = () => {
@@ -96,13 +109,15 @@ function Job() {
   }
 
   useEffect(() => {
-    axios.get(SERVER_URL + "/graph/job?teamName=" + teamName).then(res => {
+    axios.get(SERVER_URL + "/graph/job?teamName=" + projectName).then(res => {
       setJobs(res.data);
-      setJobCount(res.data.length)
+      let filteredJobs = res.data.filter(j => j.employee === "");
+      setVacantJobs(filteredJobs);
+      setJobCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));
       setLoading(false);
     });
-  }, [SERVER_URL]);
+  }, [SERVER_URL, projectName]);
 
   if (isLoading) {
     return <div className="content">Loading...</div>
@@ -111,25 +126,33 @@ function Job() {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job'}</Label></Col>
+        <Col><Label>{projectName + ' > Job'}</Label></Col>
       </Row>
       <Row>
-        <Col md="1" />
         <Col md="1">
           <Button onClick={() => back()}>Back</Button>
         </Col>
         <Col />
-        <Col md="1">
-          <Button onClick={() => createJob()}>Create job</Button>
+        <Col md="2">
+          <form>
+            <FormGroup check className="checkbox-form float-right">
+              <Label check>
+                <Input type="checkbox" defaultChecked={false} onChange={e => handleChange(e)}/>{' '}
+                Show vacant jobs only
+              </Label>
+            </FormGroup>
+          </form>
         </Col>
-        <Col md="1"></Col>
+        <Col md="2">
+          <Button className="float-right v-button" onClick={() => createJob()}>Create job</Button>
+        </Col>
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" className="content-card">
+      <Col />
+        <Col md="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
-              {jobs
+              {(vacantOnly ? vacantJobs : jobs)
                 .slice(currentState * pageSize, (currentState + 1) * pageSize)
                 .map((job, index) => {
                   return (
@@ -139,15 +162,13 @@ function Job() {
                           <CardBody>
                             <Col md="12">
                               <Row>
-                                <Col className="pr-1" md="6">
+                                <Col className="pr-1" md="3">
                                   <Row>
                                     <label>ID</label>
                                   </Row>
                                   <Row>
                                     <Label className="employee-text">{job.jobId}</Label>
                                   </Row>
-                                </Col>
-                                <Col className="pr-1" md="6">
                                   <Row>
                                     <label>Title</label>
                                   </Row>
@@ -155,10 +176,26 @@ function Job() {
                                     <Label className="employee-text">{job.jobName}</Label>
                                   </Row>
                                 </Col>
-                              </Row>
-                              <Row className="button-row">
-                                <Button className="float-right" onClick={() => toRequirement(teamName, job.jobId, job.jobName)}>View requirement</Button>
-                                <Button className="float-right" onClick={() => toCandidate(job.jobId)}>Candidate</Button>
+                                <Col className="pr-1" md="6">
+                                  <Row>
+                                    <label>Occupant</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{job.employee === "" ? "-" : job.employee}</Label>
+                                  </Row>
+                                  <Row>
+                                    <label>Stack</label>
+                                  </Row>
+                                  <Row>
+                                    <Label className="employee-text">{job.stack === "" ? "-TBD-" : job.stack}</Label>
+                                  </Row>
+                                </Col>
+                                <Col className="float-right">
+                                  <Row className="button-row float-right">
+                                    <Button className="float-right large-v-button" onClick={() => toRequirement(projectName, job.jobId, job.jobName)}>View requirement</Button>
+                                    <Button className="float-right large-v-button" onClick={() => toCandidate(job.jobId)}>Candidate</Button>
+                                  </Row>
+                                </Col>
                               </Row>
                             </Col>
                           </CardBody>
@@ -171,7 +208,7 @@ function Job() {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
+        <Col />
       </Row>
     </div>
   );

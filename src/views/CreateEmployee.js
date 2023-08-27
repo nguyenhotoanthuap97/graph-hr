@@ -204,7 +204,7 @@ function CreateEmployee() {
         </Col>
         <Col />
         <Col md="1">
-          <Button onClick={() => createEmployee()}>Create</Button>
+          <Button className="float-right" onClick={() => createEmployee()}>Create</Button>
         </Col>
         <Col md="1"></Col>
       </Row>
@@ -336,15 +336,15 @@ function CreateEmployee() {
                         <Card>
                           <CardBody>
                             <Row>
-                              <Col md="2">
+                              <Col md="5" xl="2">
                                 <Label className="employee-text">{skill.name}</Label>
                               </Col>
                               <Col />
-                              <Col md="1">
+                              <Col md="5" xl="2">
                                 <Label>Require: </Label>
                                 <InputGroup>
                                   <UncontrolledButtonDropdown>
-                                    <Input disabled value={getRating(skill)} className="title-input" />
+                                    <Input disabled value={getRating(skill)} className="title-input rating-dropdown" />
                                     <DropdownToggle outline split className="title-toggle" />
                                     <DropdownMenu>
                                       <DropdownItem onClick={() => chooseRating(skill.name, 0)}>0</DropdownItem>

@@ -5,7 +5,7 @@ var routes = [
   {
     path: "/project",
     name: "Project",
-    icon: "nc-icon nc-chart-bar-32", //nucleo-icons
+    icon: "nc-icon nc-single-copy-04", //nucleo-icons
     component: Project,
     layout: "/admin"
   },

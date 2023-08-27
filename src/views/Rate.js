@@ -6,6 +6,7 @@ import axios from "axios";
 // reactstrap components
 import { Card, CardBody, Row, Col, InputGroup, Input, InputGroupAddon, InputGroupText, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import Rating from "react-rating";
 
 function Rate() {
   const pageSize = 5;
@@ -101,16 +102,13 @@ function Rate() {
         <Col><Label>{'Employee > ' + employeeId + ' > Skill'}</Label></Col>
       </Row>
       <Row>
-        <Col md="1" />
         <Col>
           <Button onClick={() => back()}>Back</Button>
         </Col>
-        <Col />
-        <Col md="1"></Col>
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" className="content-card">
+      <Col />
+        <Col md="12" className="content-card">
           <Card className="demo-icons requirement">
             <CardBody>
               <Row>
@@ -139,9 +137,10 @@ function Rate() {
                                 <Label className="employee-text">{skill.skillName}</Label>
                               </Col>
                               <Col />
-                              <Col md="1">
-                                <Label>Require: </Label>
-                                <Input disabled value={skill.rating} />
+                              <Col md="2">
+                                <Label>Expertise: </Label>
+                                {/* <Input disabled value={skill.rating} /> */}
+                                <Rating className="rating-element" initialRating={skill.rating} readonly={true} emptySymbol="fa fa-star-o fa-2x" fullSymbol="fa fa-star fa-2x" />
                               </Col>
                             </Row>
                           </CardBody>
@@ -154,7 +153,7 @@ function Rate() {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
+        <Col />
       </Row>
     </div>
   );

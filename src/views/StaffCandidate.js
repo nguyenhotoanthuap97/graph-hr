@@ -16,7 +16,7 @@ const StaffCandidate = () => {
   const [currentState, setCurrentState] = useState(0);
   const history = useHistory();
   const jobId = history.location.state.jobId;
-  const teamName = history.location.state.teamName;
+  const projectName = history.location.state.projectName;
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
   var paginationRange = usePagination(
     employeeCount,
@@ -26,7 +26,7 @@ const StaffCandidate = () => {
   );
 
   const back = () => {
-    history.push("/admin/project/job", { teamName: teamName });
+    history.push("/admin/project/job", { projectName: projectName });
   }
 
   useEffect(() => {
@@ -86,6 +86,22 @@ const StaffCandidate = () => {
     return null;
   }
 
+  const removeAccent = (name) => {
+    return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  const extractEmail = name => {
+    let words = removeAccent(name.toLowerCase()).split(" ");
+    let email = words[words.length - 1];
+    let count = words.length - 2;
+    while (count > 0) {
+      email += words[count][0];
+      count--;
+    }
+    email += words[0];
+    return email;
+  }
+
   const handlePagination = (e, currentPage) => {
     e.preventDefault();
     setCurrentState(currentPage);
@@ -98,19 +114,16 @@ const StaffCandidate = () => {
   return (
     <div className="content">
       <Row>
-        <Col><Label>{teamName + ' > Job > ' + jobId + ' > Candidate'}</Label></Col>
+        <Col><Label>{projectName + ' > Job > ' + jobId + ' > Candidate'}</Label></Col>
       </Row>
       <Row>
-        <Col md="1" />
         <Col md="1">
           <Button onClick={() => back()}>Back</Button>
         </Col>
-        <Col />
-        <Col />
       </Row>
       <Row>
-        <Col md="1" />
-        <Col md="10" sm="12" className="content-card">
+      <Col />
+        <Col md="12" sm="12" className="content-card">
           <Card className="demo-icons">
             <CardBody>
               {employees.length > 0 ? employees
@@ -118,18 +131,18 @@ const StaffCandidate = () => {
                 .map((employee, index) => {
                   return (
                     <Row className="employee-row">
+                      <Col lg="12" xl="3">
                         <Card className="card-user">
-                          <CardBody>
-                            <div className="author">
-                              <img
-                                alt="..."
-                                className="avatar border-gray"
-                                src={require("assets/img/default-avatar.png")}
-                              />
-                            </div>
-                          </CardBody>
+                          <div className="author">
+                            <img
+                              alt="..."
+                              className="avatar border-gray"
+                              src={require("assets/img/avatars/avatar" + ((employee.id % 9) + 1) + ".jpg")}
+                            />
+                          </div>
                         </Card>
-                      <Col>
+                      </Col>
+                      <Col xs="12" sm="5" md="5" lg="5" xl="2" className="card-text-block">
                         <Row>
                           <label>Fullname</label>
                         </Row>
@@ -137,24 +150,50 @@ const StaffCandidate = () => {
                           <Label className="employee-text">{employee.name}</Label>
                         </Row>
                         <Row>
-                          <label>Id</label>
-                        </Row>
-                        <Row>
-                          <Label className="employee-text">{employee.id}</Label>
-                        </Row>
-                      </Col>
-                      <Col>
-                        <Row>
                           <label>Title</label>
                         </Row>
                         <Row>
                           <Label className="employee-text">{employee.title}</Label>
                         </Row>
                         <Row>
+                          <label>Id</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.id < 10 ? "000" + employee.id : employee.id < 100 ? "00" + employee.id : employee.id < 1000 ? "0" + employee.id : employee.id}</Label>
+                        </Row>
+                      </Col>
+                      <Col xs="12" sm="5" md="5" lg="5" xl="2" className="card-text-block">
+                        <Row>
+                          <label>Project</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.projectName === "" ? "- On Bench -" : employee.projectName}</Label>
+                        </Row>
+                        <Row>
+                          <label>Department</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text">{employee.buName === "" ? "-" : employee.buName}</Label>
+                        </Row>
+                        <Row>
                           <label>Direct report</label>
                         </Row>
                         <Row>
-                          <Label className="employee-text">{employee.superiorName}</Label>
+                          <Label className="employee-text">{employee.superiorName === "" ? "-" : employee.superiorName}</Label>
+                        </Row>
+                      </Col>
+                      <Col xs="12" sm="5" md="5" lg="5" xl="2" className="card-text-block">
+                        <Row>
+                          <label>Email</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text"><i className="nc-icon nc-email-85" />{extractEmail(employee.name) + "@graphhr.com"}</Label>
+                        </Row>
+                        <Row>
+                          <label>Phone</label>
+                        </Row>
+                        <Row>
+                          <Label className="employee-text"><i className="nc-icon nc-mobile" />{"0" + employee.sibn}</Label>
                         </Row>
                       </Col>
                     </Row>
@@ -164,7 +203,7 @@ const StaffCandidate = () => {
             </CardBody>
           </Card>
         </Col>
-        <Col md="1" />
+        <Col />
       </Row >
     </div >
   );

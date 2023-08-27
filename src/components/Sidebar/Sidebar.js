@@ -13,7 +13,7 @@ function Sidebar(props) {
   const sidebar = React.useRef();
   // verifies if routeName is the one active (in browser input)
   const activeRoute = (routeName) => {
-    return props.location.pathname.indexOf(routeName) > -1 ? "active" : "";
+    return props.location.pathname.indexOf(routeName) > -1 ? "active nav-active" : "";
   };
   React.useEffect(() => {
     if (navigator.platform.indexOf("Win") > -1) {
@@ -66,7 +66,7 @@ function Sidebar(props) {
                   activeClassName="active"
                 >
                   <i className={prop.icon} />
-                  <p>{prop.name}</p>
+                  <b>{prop.name}</b>
                 </NavLink>
               </li>
             );

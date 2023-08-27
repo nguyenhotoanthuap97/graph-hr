@@ -97,7 +97,7 @@
         border: 1px solid $table-line-color;
         color: $font-color;
         background-color: $white-color;
-        border-right: none;
+        // border-right: none;
       }
     }
   }
@@ -108,13 +108,12 @@
     .form-control,
     .form-control + .input-group-prepend .input-group-text,
     .form-control + .input-group-append .input-group-text{
-        background-color: $opacity-gray-3;
-        border: medium none;
+        background-color: $white-bg;
+        border-radius: 10px !important;
         &:focus,
         &:active,
         &:active{
-            border: medium none;
-            background-color: $opacity-gray-5;
+            // background-color: $opacity-gray-5;
         }
     }
 
@@ -130,7 +129,6 @@
     .input-group-prepend .input-group-text,
     .input-group-append .input-group-text{
         background-color: $opacity-gray-3;
-        border: none;
     }
 }
 
@@ -150,7 +148,7 @@
     border-radius: $border-radius-base;
     .input-group-text {
       border: 1px solid $danger-color;
-      border-right: none;
+      // border-right: none;
     }
   }
   .error {
@@ -166,7 +164,7 @@
     border-radius: $border-radius-base;
     .input-group-text {
       // border: 1px solid $success-color;
-      border-right: none;
+      // border-right: none;
     }
   }
 }
@@ -201,7 +199,7 @@
       .input-group-text {
         background-color: $success-input-bg;
         border: 1px solid $success-color;
-        border-right: none;
+        // border-right: none;
       }
     }
   }
@@ -263,7 +261,7 @@
   border-left: none;
 }
 .input-group-prepend .input-group-text{
-  border-right: none;
+  // border-right: none;
 }
 
 .input-group,
@@ -297,7 +295,7 @@
 .input-group .form-control:first-child,
 .input-group-btn:first-child > .dropdown-toggle,
 .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle) {
-    border-right: 0 none;
+    // border-right: 0 none;
 }
 .input-group .form-control:last-child,
 .input-group-btn:last-child > .dropdown-toggle,

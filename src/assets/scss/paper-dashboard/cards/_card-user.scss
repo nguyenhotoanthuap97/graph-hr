@@ -10,17 +10,15 @@
     .author{
         text-align: center;
         text-transform: none;
-        margin-top: 0px;
 
-        a +  p.description{
+        a + p.description{
             margin-top: 0px;
         }
     }
 
     .avatar{
-        width: 124px;
-        height: 124px;
-        border: 1px solid $white-color;
+        width: 180px;
+        height: 180px;
         position: relative;
     }
 
