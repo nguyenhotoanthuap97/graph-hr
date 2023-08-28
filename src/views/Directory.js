@@ -27,7 +27,6 @@ const Directory = () => {
 
   useEffect(() => {
     axios.get(SERVER_URL + "/graph/employee").then(res => {
-      console.log("Employees: ", res);
       setEmployees(res.data);
       setEmployeeCount(res.data.length);
       setPageState(Math.ceil(res.data.length / pageSize));

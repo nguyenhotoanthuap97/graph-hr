@@ -56,7 +56,6 @@ function CreateJob() {
       "projectName": projectName,
       "requires": requires
     }
-    console.log(requestBody);
     axios.post(SERVER_URL + "/graph/job", requestBody).then(res => {
       setModal(false);
       history.push("/admin/project/job/candidate", {jobId: res.data, projectName: projectName})
