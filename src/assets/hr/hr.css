@@ -320,3 +320,7 @@ label.employee-text {
 .rating-dropdown {
   width: 50px;
 }
+
+.content label {
+  font-size: 16px;
+}

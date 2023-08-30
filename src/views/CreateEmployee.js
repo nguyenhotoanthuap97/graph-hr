@@ -341,7 +341,7 @@ function CreateEmployee() {
                               </Col>
                               <Col />
                               <Col md="5" xl="2">
-                                <Label>Require: </Label>
+                                <Label>Expertise: </Label>
                                 <InputGroup>
                                   <UncontrolledButtonDropdown>
                                     <Input disabled value={getRating(skill)} className="title-input rating-dropdown" />
