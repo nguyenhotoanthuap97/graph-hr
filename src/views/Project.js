@@ -37,7 +37,7 @@ function Project() {
   };
 
   const renderPagination = () => {
-    if (paginationRange.length > 2) {
+    if (paginationRange.length >= 2) {
       return (
         <Row>
           <Col xl="3" lg="2" md="1" sm="0" />

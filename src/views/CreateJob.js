@@ -4,7 +4,7 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, DropdownMenu, DropdownItem, Input, DropdownToggle, Label, Button, Pagination, PaginationItem, PaginationLink, UncontrolledButtonDropdown, InputGroup, Spinner, Modal, ModalBody } from "reactstrap";
+import { Card, CardBody, Row, Col, DropdownMenu, DropdownItem, Input, DropdownToggle, Label, Button, Pagination, PaginationItem, PaginationLink, UncontrolledButtonDropdown, InputGroupAddon, InputGroup, Spinner, Modal, ModalBody } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 function useForceUpdate() {
@@ -23,6 +23,8 @@ function CreateJob() {
   const [chosenTitle, setChosenTitle] = useState("Software Engineer");
   const [chosenRating, setChosenRating] = useState({});
   const [modal, setModal] = useState(false);
+  const [filterText, setFilterText] = useState("");
+  const [filteredSkills, setFilteredSkills] = useState([]);
   const history = useHistory();
   const projectName = history.location.state.projectName;
   const forceUpdate = useForceUpdate();
@@ -62,13 +64,30 @@ function CreateJob() {
     })
   }
 
+  const removeAccent = (name) => {
+    return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  const handleFilterTextChange = event => {
+    let text = event.target.value;
+    setFilterText(text);
+    let showSkills = skills.filter(employee => removeAccent(employee.name.toLowerCase()).includes(removeAccent(text.toLowerCase())));
+    setFilteredSkills(showSkills);
+    if (text === "") {
+      setSkillCount(skills.length);
+    } else {
+      setSkillCount(showSkills.length);
+    }
+    setCurrentState(0);
+  }
+
   const handlePagination = (e, currentPage) => {
     e.preventDefault();
     setCurrentState(currentPage);
   };
 
   const renderPagination = () => {
-    if (paginationRange.length > 2) {
+    if (paginationRange.length >= 2) {
       return (
         <Row>
           <Col xl="3" lg="2" md="1" sm="0" />
@@ -187,7 +206,17 @@ function CreateJob() {
               </Row>
               <Card>
                 <CardBody>
-                  {skills
+                  <Row>
+                    <Col md="9"></Col>
+                    <Col md="3"><form>
+                      <InputGroup className="no-border">
+                        <Input placeholder="Filter by project name..." value={filterText} onChange={handleFilterTextChange} />
+                        <InputGroupAddon addonType="append">
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </form></Col>
+                  </Row>
+                  {(filterText === "" ? skills : filteredSkills)
                     .slice(currentState * pageSize, (currentState + 1) * pageSize)
                     .map((skill, index) => {
                       return (

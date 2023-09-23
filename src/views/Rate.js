@@ -36,7 +36,7 @@ function Rate() {
   };
 
   const renderPagination = () => {
-    if (paginationRange.length > 2) {
+    if (paginationRange.length >= 2) {
       return (
         <Row>
           <Col xl="3" lg="2" md="1" sm="0" />
@@ -126,7 +126,7 @@ function Rate() {
               </Row>
               <Card>
                 <CardBody>
-                  {skills
+                  {skills.length > 0 ? skills
                     .slice(currentState * pageSize, (currentState + 1) * pageSize)
                     .map((skill, index) => {
                       return (
@@ -139,14 +139,13 @@ function Rate() {
                               <Col />
                               <Col md="2">
                                 <Label>Expertise: </Label>
-                                {/* <Input disabled value={skill.rating} /> */}
                                 <Rating className="rating-element" initialRating={skill.rating} readonly={true} emptySymbol="fa fa-star-o fa-2x" fullSymbol="fa fa-star fa-2x" />
                               </Col>
                             </Row>
                           </CardBody>
                         </Card>
                       )
-                    })}
+                    }) : "No skill rated"}
                 </CardBody>
               </Card>
               {renderPagination()}

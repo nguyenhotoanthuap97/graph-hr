@@ -9,7 +9,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import Rating from "react-rating";
 
 function Requirement() {
-  const pageSize = 3;
+  const pageSize = 5;
   const siblingCount = 1;
   const [pageState, setPageState] = useState(0);
   const [currentState, setCurrentState] = useState(0);
@@ -39,7 +39,7 @@ function Requirement() {
   };
 
   const renderPagination = () => {
-    if (paginationRange.length > 2) {
+    if (paginationRange.length >= 2) {
       return (
         <Row>
           <Col xl="3" lg="2" md="1" sm="0" />
@@ -132,7 +132,7 @@ function Requirement() {
                   {requirements.length > 0 ? requirements
                     .slice(currentState * pageSize, (currentState + 1) * pageSize)
                     .map((requirement, index) => {
-                      console.log(requirement)
+                      console.log(requirements.length)
                       return (
                         <Card>
                           <CardBody>
@@ -144,13 +144,12 @@ function Requirement() {
                               <Col md="2">
                                 <Label>Require: </Label>
                                 <Rating className="rating-element" initialRating={requirement.rating} readonly={true} emptySymbol="fa fa-star-o fa-2x" fullSymbol="fa fa-star fa-2x" />
-                                {/* <Input disabled value={requirement.rating} /> */}
                               </Col>
                             </Row>
                           </CardBody>
                         </Card>
                       )
-                    }) : "No requirement"}
+                    }) : "No skill required"}
                 </CardBody>
               </Card>
               {renderPagination()}

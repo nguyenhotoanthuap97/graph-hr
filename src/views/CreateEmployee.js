@@ -4,9 +4,9 @@ import { usePagination, DOTS } from "utilities/usePagination";
 import axios from "axios";
 
 // reactstrap components
-import { Card, CardBody, Row, Col, FormGroup, Modal, ModalBody, Spinner, UncontrolledButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu, InputGroup, Input, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
+import { Card, CardBody, Row, Col, FormGroup, Modal, ModalBody, Spinner, UncontrolledButtonDropdown, DropdownToggle, DropdownItem, DropdownMenu, InputGroupAddon, InputGroup, Input, Label, Button, Pagination, PaginationItem, PaginationLink } from "reactstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
-import {DatePicker} from "reactstrap-date-picker";
+import { DatePicker } from "reactstrap-date-picker";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0);
@@ -31,6 +31,8 @@ function CreateEmployee() {
   const [pit, setPit] = useState('');
   const [id, setId] = useState('');
   const [sibn, setSibn] = useState('');
+  const [filterText, setFilterText] = useState("");
+  const [filteredSkills, setFilteredSkills] = useState([]);
   const history = useHistory();
   const forceUpdate = useForceUpdate();
   const SERVER_URL = process.env.REACT_APP_SERVER_URL;
@@ -44,6 +46,23 @@ function CreateEmployee() {
 
   const back = () => {
     history.push("/admin/employee");
+  }
+
+  const removeAccent = (name) => {
+    return name.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  }
+
+  const handleFilterTextChange = event => {
+    let text = event.target.value;
+    setFilterText(text);
+    let showSkills = skills.filter(employee => removeAccent(employee.name.toLowerCase()).includes(removeAccent(text.toLowerCase())));
+    setFilteredSkills(showSkills);
+    if (text === "") {
+      setSkillCount(skills.length);
+    } else {
+      setSkillCount(showSkills.length);
+    }
+    setCurrentState(0);
   }
 
   const chooseRating = (skill, rating) => {
@@ -81,7 +100,7 @@ function CreateEmployee() {
     console.log(requestBody);
     axios.post(SERVER_URL + "/graph/employee", requestBody).then(res => {
       setModal(false);
-      history.push("/admin/employee/candidate", {employeeId: res.data})
+      history.push("/admin/employee/candidate", { employeeId: res.data })
     })
   }
 
@@ -95,7 +114,7 @@ function CreateEmployee() {
   };
 
   const renderPagination = () => {
-    if (paginationRange.length > 2) {
+    if (paginationRange.length >= 2) {
       return (
         <Row>
           <Col xl="3" lg="2" md="1" sm="0" />
@@ -150,7 +169,7 @@ function CreateEmployee() {
   const handleTitleChange = event => {
     setTitle(event.target.value);
   }
-  
+
   const handleAddressChange = event => {
     setAddress(event.target.value);
   }
@@ -166,7 +185,7 @@ function CreateEmployee() {
   const handleIdChange = event => {
     setId(event.target.value);
   }
-  
+
   const handleSexMaleChange = event => {
     if (event.target.value === "on") {
       setSex("Male");
@@ -214,7 +233,7 @@ function CreateEmployee() {
           <Card className="demo-icons requirement">
             <CardBody>
               <Row>
-              <Col md="1" />
+                <Col md="1" />
                 <Col className="pr-1" md="4">
                   <FormGroup>
                     <label>Fullname</label>
@@ -233,17 +252,17 @@ function CreateEmployee() {
                     <label>Sex</label>
                     <FormGroup check>
                       <div>
-                      <Label check>
-                        <Input type="radio" name="sex-radio" onChange={handleSexMaleChange} checked={sex==="Male"} /> Male
-                      </Label>
-                      <Label check>
-                        <Input type="radio" name="sex-radio" onChange={handleSexFemaleChange} checked={sex==="Female"} /> Female
-                      </Label>
+                        <Label check>
+                          <Input type="radio" name="sex-radio" onChange={handleSexMaleChange} checked={sex === "Male"} /> Male
+                        </Label>
+                        <Label check>
+                          <Input type="radio" name="sex-radio" onChange={handleSexFemaleChange} checked={sex === "Female"} /> Female
+                        </Label>
                       </div>
                     </FormGroup>
                   </FormGroup>
                 </Col>
-                <Col md="1"/>
+                <Col md="1" />
               </Row>
               <Row>
                 <Col md="1" />
@@ -329,7 +348,17 @@ function CreateEmployee() {
               </Row>
               <Card>
                 <CardBody>
-                {skills
+                  <Row>
+                    <Col md="9"></Col>
+                    <Col md="3"><form>
+                      <InputGroup className="no-border">
+                        <Input placeholder="Filter by project name..." value={filterText} onChange={handleFilterTextChange} />
+                        <InputGroupAddon addonType="append">
+                        </InputGroupAddon>
+                      </InputGroup>
+                    </form></Col>
+                  </Row>
+                  {(filterText === "" ? skills : filteredSkills)
                     .slice(currentState * pageSize, (currentState + 1) * pageSize)
                     .map((skill, index) => {
                       return (
